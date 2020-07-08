@@ -11,6 +11,7 @@ from PySide2.QtWidgets import QApplication
 import azcam
 import azcam.console
 import azcam.shortcuts_console
+import azcam.shortcuts_console
 from azcam.displays.ds9display import Ds9Display
 from azcam import db
 from azcam.console import api

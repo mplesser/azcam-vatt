@@ -8,6 +8,7 @@ from genpars import GenPars
 import azcam
 from azcam import db
 import azcam.server
+import azcam.shortcuts_server
 from azcam.displays.ds9display import Ds9Display
 from azcam.systemheader import SystemHeader
 from azcam.controllers.controller_arc import ControllerArc
@@ -19,8 +20,11 @@ from azcam.webserver.web_server import WebServer
 
 from obstool.obstool import MainWindow
 
-from azcam_vatt.common.telescope_vatt import telescope
-from azcam_vatt.common.vatt_filter_code import vatt_filters
+common = os.path.abspath(os.path.dirname(__file__))
+common = os.path.abspath(os.path.join(common, "../common"))
+azcam.utils.add_searchfolder(common)
+from telescope_vatt import telescope
+from vatt_filter_code import vatt_filters
 
 # ****************************************************************
 # parse command line arguments
@@ -175,10 +179,11 @@ webserver = WebServer()
 webserver.start()
 
 # ****************************************************************
-# obstool GUI
+# GUIs
 # ****************************************************************
 obstool = MainWindow()
-obstool.start()
+#obstool.start()
+import start_azcamtool
 
 # ****************************************************************
 # clean namespace
