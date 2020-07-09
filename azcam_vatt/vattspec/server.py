@@ -20,6 +20,8 @@ from azcam.webserver.web_server import WebServer
 
 from obstool.obstool import MainWindow
 
+import azcam.monitorinterface
+
 common = os.path.abspath(os.path.dirname(__file__))
 common = os.path.abspath(os.path.join(common, "../common"))
 azcam.utils.add_searchfolder(common)
@@ -177,6 +179,12 @@ db.cli_cmds.update({"azcam": azcam, "db": db})
 # ****************************************************************
 webserver = WebServer()
 webserver.start()
+
+# ****************************************************************
+# azcammonitor
+# ****************************************************************
+monitor = azcam.monitorinterface.MonitorInterface()
+monitor.register()
 
 # ****************************************************************
 # GUIs
