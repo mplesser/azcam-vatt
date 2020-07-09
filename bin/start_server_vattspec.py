@@ -7,9 +7,7 @@ Usage: Execute this file from File Explorer
 import os
 import sys
 
-# rootfolder = os.path.abspath(os.path.relpath("../azcam_itl"))
-# absolute folder needed for azcammonitor
-rootfolder = os.path.abspath(os.path.relpath("/azcam/azcam-vatt/azcam_vatt"))
+rootfolder = os.path.abspath(os.path.relpath("/azcam/azcam-vatt/azcam_vatt/vattspec"))
 rootfolder = os.path.normpath(rootfolder).replace("\\", "/")
 
 # select which python to use (virtual environments)
