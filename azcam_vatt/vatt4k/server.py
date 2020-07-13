@@ -26,7 +26,6 @@ common = os.path.abspath(os.path.dirname(__file__))
 common = os.path.abspath(os.path.join(common, "../common"))
 azcam.utils.add_searchfolder(common)
 from telescope_vatt import telescope
-from vatt_filter_code import vatt_filters
 
 # ****************************************************************
 # parse command line arguments
@@ -146,7 +145,6 @@ instrument = Instrument()
 # telescope
 # ****************************************************************
 telescope = telescope
-db.vfilters = vatt_filters()
 
 # ****************************************************************
 # system header template

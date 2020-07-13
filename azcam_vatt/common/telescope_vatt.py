@@ -9,6 +9,7 @@ import azcam
 
 from azcam.header import Header
 from azcam.telescopes.telescope import Telescope
+from vatt_filter_code import vatt_filters
 
 
 class StewardTCS(Telescope):
@@ -28,6 +29,8 @@ class StewardTCS(Telescope):
         self.use_bokpop = 0
         self.enabled = 0
         self.initialized = 0
+
+        self.vfilters = vatt_filters()
 
         self._DEBUG = 0
 

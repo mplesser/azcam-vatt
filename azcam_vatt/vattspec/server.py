@@ -26,7 +26,6 @@ common = os.path.abspath(os.path.dirname(__file__))
 common = os.path.abspath(os.path.join(common, "../common"))
 azcam.utils.add_searchfolder(common)
 from telescope_vatt import telescope
-from vatt_filter_code import vatt_filters
 
 # ****************************************************************
 # parse command line arguments
@@ -45,9 +44,7 @@ azcam.db.systemfolder = os.path.dirname(__file__)
 azcam.db.systemfolder = azcam.utils.fix_path(azcam.db.systemfolder)
 azcam.db.datafolder = os.path.join("/data", azcam.db.systemname)
 azcam.db.datafolder = azcam.utils.fix_path(azcam.db.datafolder)
-azcam.db.parfile = os.path.join(
-    azcam.db.datafolder, f"parameters_{azcam.db.systemname}.ini"
-)
+azcam.db.parfile = os.path.join(azcam.db.datafolder, f"parameters_{azcam.db.systemname}.ini")
 
 # ****************************************************************
 # enable logging
@@ -84,12 +81,8 @@ controller.utility_board = "gen2"
 controller.set_boards()
 controller.camserver.set_server("vattccdc", 2405)
 controller.pci_file = os.path.join(db.systemfolder, "dspcode", "dsppci", "pci2.lod")
-controller.timing_file = os.path.join(
-    db.systemfolder, "dspcode", "dsptiming", "tim2.lod"
-)
-controller.utility_file = os.path.join(
-    db.systemfolder, "dspcode", "dsputility", "util2.lod"
-)
+controller.timing_file = os.path.join(db.systemfolder, "dspcode", "dsptiming", "tim2.lod")
+controller.utility_file = os.path.join(db.systemfolder, "dspcode", "dsputility", "util2.lod")
 controller.video_gain = 10
 controller.video_speed = 1
 
@@ -147,7 +140,6 @@ instrument = Instrument()
 # telescope
 # ****************************************************************
 telescope = telescope
-db.vfilters = vatt_filters()
 
 # ****************************************************************
 # system header template
@@ -190,7 +182,7 @@ monitor.register()
 # GUIs
 # ****************************************************************
 obstool = MainWindow()
-#obstool.start()
+# obstool.start()
 import start_azcamtool
 
 # ****************************************************************
