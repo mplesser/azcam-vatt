@@ -7,7 +7,8 @@ Usage: Execute this file from File Explorer
 import os
 import sys
 
-rootfolder = os.path.abspath(os.path.relpath("/azcam/azcam-vatt/azcam_vatt/vatt4k"))
+rootfolder = "/data/code/azcam-vatt/azcam_vatt/vatt4k"
+rootfolder = os.path.abspath(os.path.relpath(rootfolder))
 rootfolder = os.path.normpath(rootfolder).replace("\\", "/")
 
 # select which python to use (virtual environments)
@@ -23,7 +24,7 @@ else:
 
 profile = "azcamconsole"
 
-import_command = f"sys.path.append('{rootfolder}');" f"import console; from azcam.cli import *"
+import_command = f"sys.path.append('{rootfolder}');" f"import azcam_vatt4k_console; from azcam.cli import *"
 
 # execute
 cl = (
