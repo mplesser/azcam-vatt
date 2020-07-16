@@ -71,7 +71,7 @@ azcam.db.cli_cmds["observe"] = observe
 # ****************************************************************
 # try to connect to azcamserver
 # ****************************************************************
-connected = api.connect()
+connected = api.connect(port=2412)
 if connected:
     azcam.log("Connected to azcamserver")
 else:

@@ -7,7 +7,7 @@ Usage: Execute this file from File Explorer
 import os
 import sys
 
-rootfolder = "/data/code/azcam-vatt/azcam_vatt/vattspec"
+rootfolder = "/azcam/azcam-vatt/azcam_vatt/vattspec"
 rootfolder = os.path.abspath(os.path.relpath(rootfolder))
 rootfolder = os.path.normpath(rootfolder).replace("\\", "/")
 

@@ -59,7 +59,7 @@ azcam.log(f"Configuring for vattspec")
 # define and start command server
 # ****************************************************************
 cmdserver = CommandServer()
-cmdserver.port = 2402
+cmdserver.port = 2412
 azcam.log(f"Starting command server listening on port {cmdserver.port}")
 # cmdserver.welcome_message = "Welcome - azcam-itl server"
 cmdserver.start()
@@ -182,8 +182,10 @@ monitor.register()
 # GUIs
 # ****************************************************************
 obstool = MainWindow()
-# obstool.start()
-import start_azcamtool
+if 0:
+    obstool.start()
+if 0:
+    import start_azcamtool
 
 # ****************************************************************
 # clean namespace
