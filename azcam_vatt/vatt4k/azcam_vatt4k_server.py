@@ -181,6 +181,7 @@ webserver.start()
 # azcammonitor
 # ****************************************************************
 monitor = azcam.monitorinterface.MonitorInterface()
+monitor.proc_path = "/data/code/azcam-vatt/bin/start_server_vatt4k.bat"
 monitor.register()
 
 # ****************************************************************
