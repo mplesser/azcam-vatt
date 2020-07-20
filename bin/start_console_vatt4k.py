@@ -7,7 +7,8 @@ Usage: Execute this file from File Explorer
 import os
 import sys
 
-rootfolder = "/data/code/azcam-vatt/azcam_vatt/vatt4k"
+# rootfolder = "/data/code/azcam-vatt/azcam_vatt/vatt4k"
+rootfolder = "/azcam/azcam-vatt/azcam_vatt/vatt4k"
 rootfolder = os.path.abspath(os.path.relpath(rootfolder))
 rootfolder = os.path.normpath(rootfolder).replace("\\", "/")
 

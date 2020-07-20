@@ -176,7 +176,8 @@ webserver.start()
 # azcammonitor
 # ****************************************************************
 monitor = azcam.monitorinterface.MonitorInterface()
-monitor.proc_path = "/data/code/azcam-vatt/bin/start_server_vattspec.bat"
+# monitor.proc_path = "/data/code/azcam-vatt/bin/start_server_vattspec.bat"
+monitor.proc_path = "/azcam/azcam-vatt/bin/start_server_vattspec.bat"
 monitor.register()
 
 # ****************************************************************
