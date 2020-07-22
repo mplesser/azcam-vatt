@@ -4,7 +4,6 @@ import datetime
 
 from PySide2.QtWidgets import QApplication
 from genpars import GenPars
-
 import azcam
 from azcam import db
 import azcam.server
@@ -17,9 +16,7 @@ from azcam.exposures.exposure_arc import ExposureArc
 from azcam.cmdserver import CommandServer
 from azcam.instruments.instrument import Instrument
 from azcam.webserver.web_server import WebServer
-
 from obstool.obstool import MainWindow
-
 import azcam.monitorinterface
 
 common = os.path.abspath(os.path.dirname(__file__))
@@ -40,6 +37,7 @@ except ValueError:
 # define folders for system
 # ****************************************************************
 azcam.db.systemname = "vattspec"
+azcam.db.servermode = "vattspec"
 azcam.db.systemfolder = os.path.dirname(__file__)
 azcam.db.systemfolder = azcam.utils.fix_path(azcam.db.systemfolder)
 azcam.db.datafolder = os.path.join("/data", azcam.db.systemname)

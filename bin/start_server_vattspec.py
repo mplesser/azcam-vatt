@@ -25,7 +25,7 @@ else:
 
 profile = "azcamserver"
 
-import_command = f"sys.path.append('{rootfolder}');" f"import azcam_vattspec_server; from azcam.cli import *"
+import_command = f"sys.path.append('{rootfolder}');" f"import server_vattspec; from azcam.cli import *"
 
 # execute
 cl = (

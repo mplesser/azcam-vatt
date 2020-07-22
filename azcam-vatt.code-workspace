@@ -4,10 +4,16 @@
 			"path": "."
 		},
 		{
-			"path": "..\\azcam"
+			"path": "..\\azcammonitor"
 		},
 		{
-			"path": "..\\monitor-azcam"
+			"path": "..\\..\\data\\code\\azcam"
+		},
+		{
+			"path": "..\\azcam-bok"
+		},
+		{
+			"path": "..\\azcam-mont4k"
 		}
 	],
 	"settings": {}

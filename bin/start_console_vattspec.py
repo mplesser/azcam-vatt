@@ -25,7 +25,7 @@ else:
 
 profile = "azcamconsole"
 
-import_command = f"sys.path.append('{rootfolder}');" f"import azcam_vattspec_console; from azcam.cli import *"
+import_command = f"sys.path.append('{rootfolder}');" f"import console_vattspec; from azcam.cli import *"
 
 # execute
 cl = (
