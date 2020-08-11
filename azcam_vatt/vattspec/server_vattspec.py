@@ -3,10 +3,10 @@ import sys
 import datetime
 
 from PySide2.QtWidgets import QApplication
-from genpars import GenPars
 import azcam
 from azcam import db
 import azcam.server
+from azcam.genpars import GenPars
 import azcam.shortcuts_server
 from azcam.displays.ds9display import Ds9Display
 from azcam.systemheader import SystemHeader
@@ -16,7 +16,6 @@ from azcam.exposures.exposure_arc import ExposureArc
 from azcam.cmdserver import CommandServer
 from azcam.instruments.instrument import Instrument
 from azcam.webserver.web_server import WebServer
-from obstool.obstool import MainWindow
 import azcam.monitorinterface
 
 common = os.path.abspath(os.path.dirname(__file__))
@@ -153,10 +152,10 @@ display = Ds9Display()
 # ****************************************************************
 # read par file
 # ****************************************************************
-azcam.db.genpars = GenPars()
-pardict = azcam.db.genpars.parfile_read(azcam.db.parfile)["azcamserver"]
+genpars = GenPars()
+pardict = genpars.parfile_read(azcam.db.parfile)["azcamserver"]
 azcam.utils.update_pars(0, pardict)
-wd = azcam.db.genpars.get_par(pardict, "wd", "default")
+wd = genpars.get_par(pardict, "wd", "default")
 azcam.utils.curdir(wd)
 
 # ****************************************************************
@@ -181,10 +180,7 @@ monitor.register()
 # ****************************************************************
 # GUIs
 # ****************************************************************
-obstool = MainWindow()
-if 0:
-    obstool.start()
-if 0:
+if 1:
     import start_azcamtool
 
 # ****************************************************************

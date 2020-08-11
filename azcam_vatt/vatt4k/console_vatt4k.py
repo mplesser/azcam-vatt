@@ -14,8 +14,8 @@ from azcam.displays.ds9display import Ds9Display
 from azcam import db
 from azcam.console import api
 from focus import Focus
+from azcam.genpars import GenPars
 from observe.observe import Observe
-from genpars import GenPars
 
 azcam.log("Loading azcam-vatt environment")
 
@@ -76,10 +76,10 @@ else:
 # ****************************************************************
 # read par file
 # ****************************************************************
-azcam.db.genpars = GenPars()
-pardict = azcam.db.genpars.parfile_read(azcam.db.parfile)["azcamconsole"]
+genpars = GenPars()
+pardict = genpars.parfile_read(azcam.db.parfile)["azcamconsole"]
 azcam.utils.update_pars(0, pardict)
-wd = azcam.db.genpars.get_par(pardict, "wd", "default")
+wd = genpars.get_par(pardict, "wd", "default")
 azcam.utils.curdir(wd)
 
 # ****************************************************************
