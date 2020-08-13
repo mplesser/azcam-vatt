@@ -17,15 +17,14 @@ class StewardTCS(Telescope):
     The interface to the Steward Observatory TCS telescope server.
     """
 
-    def __init__(self):
+    def __init__(self, *args):
         """
         Creates the telescope object.
         """
 
-        Telescope.__init__(self)
+        super().__init__(*args)
 
         # telescope header object
-        self.header = Header("Telescope")
         self.use_bokpop = 0
         self.enabled = 0
         self.initialized = 0
@@ -176,10 +175,11 @@ class StewardTCS(Telescope):
         if not self.enabled:
             return ["WARNING", "telescope not enabled"]
 
-        for key in self.header.get_all_keywords():
+        #for key in self.header.get_all_keywords():
+        for key in self.Tserver.keywords:
             self.read_keyword(key)
 
-        return []
+        return self.header.get_info()
 
     def update_header(self):
         """
@@ -462,7 +462,7 @@ class TelcomServerInterface(object):
         Initialize communication interface to telescope server.
         """
 
-        self.Host = "vatttel"
+        self.Host = "vatttel.vatt"
         self.Port = 5750
         self.TELID = "VATT"
         self.Offset = 10
@@ -483,7 +483,7 @@ class TelcomServerInterface(object):
         self.Socket.settimeout(5.0)
         try:
             self.Socket.connect((self.Host, self.Port))
-            return
+            return ["OK"]
         except Exception as inst:
             return ["ERROR", '"could not open telescope server socket: %s"' % inst]
 
