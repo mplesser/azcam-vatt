@@ -462,7 +462,7 @@ class TelcomServerInterface(object):
         Initialize communication interface to telescope server.
         """
 
-        self.Host = "vatttel"
+        self.Host = "vatttel.vatt"
         self.Port = 5750
         self.TELID = "VATT"
         self.Offset = 10
@@ -483,7 +483,7 @@ class TelcomServerInterface(object):
         self.Socket.settimeout(5.0)
         try:
             self.Socket.connect((self.Host, self.Port))
-            return
+            return ["OK"]
         except Exception as inst:
             return ["ERROR", '"could not open telescope server socket: %s"' % inst]
 

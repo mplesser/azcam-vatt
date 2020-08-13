@@ -111,8 +111,8 @@ exposure.display_image = 0
 exposure.filename.folder = "/mnt/TBArray/images"
 remote_imageserver_host = "vattiraf"
 remote_imageserver_port = 6543
-exposure.set_remote_server(remote_imageserver_host, remote_imageserver_port)
-# exposure.set_remote_server()
+#exposure.set_remote_server(remote_imageserver_host, remote_imageserver_port)
+exposure.set_remote_server()
 
 # ****************************************************************
 # detector
