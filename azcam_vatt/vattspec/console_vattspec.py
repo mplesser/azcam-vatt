@@ -15,7 +15,7 @@ import azcam.shortcuts_console
 from azcam.displays.ds9display import Ds9Display
 from azcam import db
 from azcam.console import api
-from focus import Focus
+from focus.focus import Focus
 from azcam.genpars import GenPars
 from observe.observe import Observe
 
