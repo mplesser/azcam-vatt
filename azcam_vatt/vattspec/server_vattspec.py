@@ -2,7 +2,6 @@ import os
 import sys
 import datetime
 
-from PySide2.QtWidgets import QApplication
 import azcam
 from azcam import db
 import azcam.server
@@ -62,12 +61,6 @@ azcam.log(f"Starting command server listening on port {cmdserver.port}")
 cmdserver.start()
 
 # ****************************************************************
-# create Qt app
-# ****************************************************************
-app = QApplication(sys.argv)
-azcam.db.qtapp = app
-
-# ****************************************************************
 # controller
 # ****************************************************************
 controller = ControllerArc()
@@ -109,7 +102,7 @@ exposure.filename.folder = "/mnt/TBArray/images"
 remote_imageserver_host = "vattcontrol.vatt"
 remote_imageserver_port = 6543
 exposure.set_remote_server(remote_imageserver_host, remote_imageserver_port)
-#exposure.set_remote_server()
+# exposure.set_remote_server()
 
 # ****************************************************************
 # detector
