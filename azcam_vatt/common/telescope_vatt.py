@@ -119,7 +119,9 @@ class StewardTCS(Telescope):
             return ["WARNING", "telescope not enabled"]
 
         try:
-            command = self.Tserver.make_packet("REQUEST " + self.Tserver.keywords[Keyword])
+            command = self.Tserver.make_packet(
+                "REQUEST " + self.Tserver.keywords[Keyword]
+            )
         except KeyError:
             return ["ERROR", "Keyword %s not defined" % Keyword]
 
@@ -175,7 +177,7 @@ class StewardTCS(Telescope):
         if not self.enabled:
             return ["WARNING", "telescope not enabled"]
 
-        #for key in self.header.get_all_keywords():
+        # for key in self.header.get_all_keywords():
         for key in self.Tserver.keywords:
             self.read_keyword(key)
 
@@ -347,12 +349,20 @@ class StewardTCS(Telescope):
 
             if not motion:
                 azcam.log("Telescope reports it is STOPPED")
-                azcam.log("Coords:", self.read_keyword("RA")[1], self.read_keyword("DEC")[1])
-                azcam.log("Coords:", self.read_keyword("RA")[1], self.read_keyword("DEC")[1])
-                azcam.log("Coords:", self.read_keyword("RA")[1], self.read_keyword("DEC")[1])
+                azcam.log(
+                    "Coords:", self.read_keyword("RA")[1], self.read_keyword("DEC")[1]
+                )
+                azcam.log(
+                    "Coords:", self.read_keyword("RA")[1], self.read_keyword("DEC")[1]
+                )
+                azcam.log(
+                    "Coords:", self.read_keyword("RA")[1], self.read_keyword("DEC")[1]
+                )
                 return
             else:
-                azcam.log("Coords:", self.read_keyword("RA")[1], self.read_keyword("DEC")[1])
+                azcam.log(
+                    "Coords:", self.read_keyword("RA")[1], self.read_keyword("DEC")[1]
+                )
 
             time.sleep(0.1)
             cycle += 1  # not used for now
@@ -519,7 +529,9 @@ class TelcomServerInterface(object):
         """
 
         try:
-            reply = self.Socket.send(str.encode(command + "\r\n"))  # send command with terminator
+            reply = self.Socket.send(
+                str.encode(command + "\r\n")
+            )  # send command with terminator
         except:
             pass
 
@@ -558,7 +570,9 @@ class TelcomServerInterface(object):
         if keyword == "ROTANGLE":
             ReplyLength = ReplyLength - 2
 
-        reply = telemetry[self.Offsets[keyword] - 1 : self.Offsets[keyword] + ReplyLength]
+        reply = telemetry[
+            self.Offsets[keyword] - 1 : self.Offsets[keyword] + ReplyLength
+        ]
 
         # parse RA and DEC specially
         if keyword == "RA":

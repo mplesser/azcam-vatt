@@ -26,14 +26,16 @@ azcam.db.systemfolder = os.path.dirname(__file__)
 azcam.utils.add_searchfolder(azcam.db.systemfolder, 0)  # top level only
 azcam.utils.add_searchfolder(os.path.join(azcam.db.systemfolder, "common"), 1)
 azcam.db.datafolder = os.path.join("/data", azcam.db.systemname)
-azcam.db.parfile = os.path.join(azcam.db.datafolder, f"parameters_{azcam.db.systemname}.ini")
+azcam.db.parfile = os.path.join(
+    azcam.db.datafolder, f"parameters_{azcam.db.systemname}.ini"
+)
 
 # ****************************************************************
 # start logging
 # ****************************************************************
 tt = datetime.datetime.strftime(datetime.datetime.now(), "%d%b%y_%H%M%S")
 azcam.db.logfile = os.path.join(db.datafolder, "logs", f"console_{tt}.log")
-azcam.utils.start_logging(db.logfile)
+azcam.logging.start_logging(db.logfile)
 azcam.log(f"Configuring console for {azcam.db.systemname}")
 
 # ****************************************************************

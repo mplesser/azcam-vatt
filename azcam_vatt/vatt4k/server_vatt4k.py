@@ -40,14 +40,16 @@ azcam.db.systemfolder = os.path.dirname(__file__)
 azcam.db.systemfolder = azcam.utils.fix_path(azcam.db.systemfolder)
 azcam.db.datafolder = os.path.join("/data", azcam.db.systemname)
 azcam.db.datafolder = azcam.utils.fix_path(azcam.db.datafolder)
-azcam.db.parfile = os.path.join(azcam.db.datafolder, f"parameters_{azcam.db.systemname}.ini")
+azcam.db.parfile = os.path.join(
+    azcam.db.datafolder, f"parameters_{azcam.db.systemname}.ini"
+)
 
 # ****************************************************************
 # enable logging
 # ****************************************************************
 tt = datetime.datetime.strftime(datetime.datetime.now(), "%d%b%y_%H%M%S")
 azcam.db.logfile = os.path.join(azcam.db.datafolder, "logs", f"server_{tt}.log")
-azcam.utils.start_logging(azcam.db.logfile, "123")
+azcam.logging.start_logging(azcam.db.logfile, "123")
 
 azcam.log(f"Configuring for vatt4k")
 
@@ -72,8 +74,12 @@ controller.utility_board = "gen2"
 controller.set_boards()
 controller.camserver.set_server("vattccdc", 2405)
 controller.pci_file = os.path.join(db.systemfolder, "dspcode", "dsppci", "pci2.lod")
-controller.timing_file = os.path.join(db.systemfolder, "dspcode", "dsptiming", "tim2.lod")
-controller.utility_file = os.path.join(db.systemfolder, "dspcode", "dsputility", "util2.lod")
+controller.timing_file = os.path.join(
+    db.systemfolder, "dspcode", "dsptiming", "tim2.lod"
+)
+controller.utility_file = os.path.join(
+    db.systemfolder, "dspcode", "dsputility", "util2.lod"
+)
 controller.video_gain = 2
 controller.video_speed = 2
 
@@ -184,7 +190,7 @@ if 1:
 # clean namespace
 # # ****************************************************************
 del azcam.focalplane, azcam.displays, azcam.sockets
-del azcam.telescopes, azcam.plot
+del azcam.telescopes
 
 # ****************************************************************
 # apps
