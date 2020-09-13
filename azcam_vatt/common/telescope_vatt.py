@@ -1,4 +1,4 @@
-# Contains the StewardTCS class which defines the Steward Telescope Control System interface.
+# Contains the StewardTCS class which defines the Telescope Control System interface for VATT.
 
 import sys
 import os
@@ -17,21 +17,16 @@ class StewardTCS(Telescope):
     The interface to the Steward Observatory TCS telescope server.
     """
 
-    def __init__(self, *args):
-        """
-        Creates the telescope object.
-        """
+    def __init__(self, obj_id="telescope", obj_name="VATT telescope"):
 
-        super().__init__(*args)
+        super().__init__(obj_id, obj_name)
 
         # telescope header object
         self.use_bokpop = 0
-        self.enabled = 0
-        self.initialized = 0
 
         self.vfilters = vatt_filters()
 
-        self._DEBUG = 0
+        self.DEBUG = 0
 
     def initialize(self):
         """
@@ -42,7 +37,7 @@ class StewardTCS(Telescope):
             return
 
         if not self.enabled:
-            azcam.AzcamWarning("telescope is not enabled")
+            azcam.AzcamWarning(f"{self.name} is not enabled")
             return
 
         # do not write telescope header with bokpop as it is in 'instrument'
@@ -80,7 +75,6 @@ class StewardTCS(Telescope):
     # **************************************************************************************************
     # Keywords
     # **************************************************************************************************
-
     def define_keywords(self):
         """
         Defines telescope keywords to telescope, if they are not already defined.
@@ -264,7 +258,7 @@ class StewardTCS(Telescope):
         if not self.enabled:
             return ["WARNING", "telescope not enabled"]
 
-        if self._DEBUG == 1:
+        if self.DEBUG == 1:
             return
 
         replylen = 1024
@@ -301,7 +295,7 @@ class StewardTCS(Telescope):
         if not self.enabled:
             return ["WARNING", "telescope not enabled"]
 
-        if self._DEBUG == 1:
+        if self.DEBUG == 1:
             return
 
         replylen = 1024
@@ -330,7 +324,7 @@ class StewardTCS(Telescope):
         if not self.enabled:
             return ["WARNING", "telescope not enabled"]
 
-        if self._DEBUG == 1:
+        if self.DEBUG == 1:
             return
 
         # loop without timeout
