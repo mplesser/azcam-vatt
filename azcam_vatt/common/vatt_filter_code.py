@@ -38,7 +38,8 @@ class vatt_filters:
         conn = self.connect()
         qrystring = b"<getProperties version='1.7' device='FILTERS' />"
         conn.send(qrystring)
-        regex = re.compile('message="(\w*):(\w*) (\w*):(\w*)"')
+        # regex = re.compile('message="(\w*):(\w*) (\w*):(\w*)"')
+        regex = re.compile('message="(\w*):(.+?(?=lower))(\w*):(.+?(?="))"')
         resp = ""
         while True:
             try:
