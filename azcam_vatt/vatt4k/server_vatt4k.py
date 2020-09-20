@@ -5,6 +5,7 @@ import datetime
 import azcam
 from azcam import db
 import azcam.server
+from azcam.server import api
 from azcam.genpars import GenPars
 import azcam.shortcuts_server
 from azcam.displays.ds9display import Ds9Display
@@ -160,7 +161,7 @@ azcam.utils.curdir(wd)
 # ****************************************************************
 # define names to imported into namespace when using cli
 # # ****************************************************************
-db.cli_cmds.update({"azcam": azcam, "db": db, "api": azcam.server.api})
+db.cli_cmds.update({"azcam": azcam, "db": db, "api": api})
 
 # ****************************************************************
 # web server
