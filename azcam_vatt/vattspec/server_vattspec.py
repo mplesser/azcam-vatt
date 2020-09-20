@@ -155,7 +155,7 @@ azcam.utils.curdir(wd)
 # ****************************************************************
 # define names to imported into namespace when using cli
 # # ****************************************************************
-db.cli_cmds.update({"azcam": azcam, "db": db})
+db.cli_cmds.update({"azcam": azcam, "db": db, "api": azcam.server.api})
 
 # ****************************************************************
 # web server

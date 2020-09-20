@@ -26,9 +26,7 @@ azcam.db.systemfolder = os.path.dirname(__file__)
 azcam.utils.add_searchfolder(azcam.db.systemfolder, 0)  # top level only
 azcam.utils.add_searchfolder(os.path.join(azcam.db.systemfolder, "common"), 1)
 azcam.db.datafolder = os.path.join("/data", azcam.db.systemname)
-azcam.db.parfile = os.path.join(
-    azcam.db.datafolder, f"parameters_{azcam.db.systemname}.ini"
-)
+azcam.db.parfile = os.path.join(azcam.db.datafolder, f"parameters_{azcam.db.systemname}.ini")
 
 # ****************************************************************
 # start logging
@@ -80,7 +78,7 @@ azcam.utils.curdir(wd)
 # ****************************************************************
 # define names to imported into namespace when using cli
 # # ****************************************************************
-azcam.db.cli_cmds.update({"azcam": azcam, "db": db, "api": api})
+azcam.db.cli_cmds.update({"azcam": azcam, "db": db, "api": azcam.console.api})
 
 # ****************************************************************
 # clean namespace
