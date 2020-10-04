@@ -6,11 +6,6 @@ Usage: Execute this file from File Explorer
 
 import os
 import sys
-from pathlib import Path, PurePosixPath
-
-rootfolder = Path(__file__).resolve().parent.parent
-rootfolder = rootfolder / "azcam_vatt/vatt4k"
-rootfolder = str(PurePosixPath(rootfolder))
 
 # select which python to use (virtual environments)
 python = "ipython.exe"
@@ -25,9 +20,7 @@ else:
 
 profile = "azcamserver"
 
-import_command = (
-    f"sys.path.append('{rootfolder}');" f"import server_vatt4k; from azcam.cli import *"
-)
+import_command = f"import azcam_vatt.vatt4k.server_vatt4k; from azcam.cli import *"
 
 # execute
 cl = (
