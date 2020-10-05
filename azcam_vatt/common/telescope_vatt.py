@@ -1,4 +1,4 @@
-# Contains the StewardTCS class which defines the Steward Telescope Control System interface.
+# Contains the StewardTCS class which defines the Telescope Control System interface for VATT.
 
 import sys
 import os
@@ -9,7 +9,7 @@ import azcam
 
 from azcam.header import Header
 from azcam.telescopes.telescope import Telescope
-from vatt_filter_code import vatt_filters
+from azcam_vatt.common.vatt_filter_code import vatt_filters
 
 
 class StewardTCS(Telescope):
@@ -17,21 +17,16 @@ class StewardTCS(Telescope):
     The interface to the Steward Observatory TCS telescope server.
     """
 
-    def __init__(self, *args):
-        """
-        Creates the telescope object.
-        """
+    def __init__(self, obj_id="telescope", obj_name="VATT telescope"):
 
-        super().__init__(*args)
+        super().__init__(obj_id, obj_name)
 
         # telescope header object
         self.use_bokpop = 0
-        self.enabled = 0
-        self.initialized = 0
 
         self.vfilters = vatt_filters()
 
-        self._DEBUG = 0
+        self.DEBUG = 0
 
     def initialize(self):
         """
@@ -42,7 +37,7 @@ class StewardTCS(Telescope):
             return
 
         if not self.enabled:
-            azcam.AzcamWarning("telescope is not enabled")
+            azcam.AzcamWarning(f"{self.name} is not enabled")
             return
 
         # do not write telescope header with bokpop as it is in 'instrument'
@@ -80,7 +75,6 @@ class StewardTCS(Telescope):
     # **************************************************************************************************
     # Keywords
     # **************************************************************************************************
-
     def define_keywords(self):
         """
         Defines telescope keywords to telescope, if they are not already defined.
@@ -119,7 +113,9 @@ class StewardTCS(Telescope):
             return ["WARNING", "telescope not enabled"]
 
         try:
-            command = self.Tserver.make_packet("REQUEST " + self.Tserver.keywords[Keyword])
+            command = self.Tserver.make_packet(
+                "REQUEST " + self.Tserver.keywords[Keyword]
+            )
         except KeyError:
             return ["ERROR", "Keyword %s not defined" % Keyword]
 
@@ -264,7 +260,7 @@ class StewardTCS(Telescope):
         if not self.enabled:
             return ["WARNING", "telescope not enabled"]
 
-        if self._DEBUG == 1:
+        if self.DEBUG == 1:
             return
 
         replylen = 1024
@@ -301,7 +297,7 @@ class StewardTCS(Telescope):
         if not self.enabled:
             return ["WARNING", "telescope not enabled"]
 
-        if self._DEBUG == 1:
+        if self.DEBUG == 1:
             return
 
         replylen = 1024
@@ -330,7 +326,7 @@ class StewardTCS(Telescope):
         if not self.enabled:
             return ["WARNING", "telescope not enabled"]
 
-        if self._DEBUG == 1:
+        if self.DEBUG == 1:
             return
 
         # loop without timeout
@@ -347,12 +343,20 @@ class StewardTCS(Telescope):
 
             if not motion:
                 azcam.log("Telescope reports it is STOPPED")
-                azcam.log("Coords:", self.get_keyword("RA")[1], self.get_keyword("DEC")[1])
-                azcam.log("Coords:", self.get_keyword("RA")[1], self.get_keyword("DEC")[1])
-                azcam.log("Coords:", self.get_keyword("RA")[1], self.get_keyword("DEC")[1])
+                azcam.log(
+                    "Coords:", self.get_keyword("RA")[1], self.get_keyword("DEC")[1]
+                )
+                azcam.log(
+                    "Coords:", self.get_keyword("RA")[1], self.get_keyword("DEC")[1]
+                )
+                azcam.log(
+                    "Coords:", self.get_keyword("RA")[1], self.get_keyword("DEC")[1]
+                )
                 return
             else:
-                azcam.log("Coords:", self.get_keyword("RA")[1], self.get_keyword("DEC")[1])
+                azcam.log(
+                    "Coords:", self.get_keyword("RA")[1], self.get_keyword("DEC")[1]
+                )
 
             time.sleep(0.1)
             cycle += 1  # not used for now
@@ -519,7 +523,9 @@ class TelcomServerInterface(object):
         """
 
         try:
-            reply = self.Socket.send(str.encode(command + "\r\n"))  # send command with terminator
+            reply = self.Socket.send(
+                str.encode(command + "\r\n")
+            )  # send command with terminator
         except:
             pass
 
@@ -558,7 +564,9 @@ class TelcomServerInterface(object):
         if keyword == "ROTANGLE":
             ReplyLength = ReplyLength - 2
 
-        reply = telemetry[self.Offsets[keyword] - 1 : self.Offsets[keyword] + ReplyLength]
+        reply = telemetry[
+            self.Offsets[keyword] - 1 : self.Offsets[keyword] + ReplyLength
+        ]
 
         # parse RA and DEC specially
         if keyword == "RA":

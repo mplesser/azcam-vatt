@@ -2,13 +2,11 @@ import os
 import sys
 import datetime
 
-import azcam
-from azcam import db
-import azcam.server
+from azcam.server import azcam
 from azcam.genpars import GenPars
 import azcam.shortcuts_server
 from azcam.displays.ds9display import Ds9Display
-from azcam.systemheader import SystemHeader
+from azcam.header import Header
 from azcam.controllers.controller_arc import ControllerArc
 from azcam.tempcons.tempcon_arc import TempConArc
 from azcam.exposures.exposure_arc import ExposureArc
@@ -17,10 +15,7 @@ from azcam.instruments.instrument import Instrument
 from azcam.webserver.web_server import WebServer
 import azcam.monitorinterface
 
-common = os.path.abspath(os.path.dirname(__file__))
-common = os.path.abspath(os.path.join(common, "../common"))
-azcam.utils.add_searchfolder(common)
-from telescope_vatt import telescope
+from azcam_vatt.common.telescope_vatt import telescope
 
 # ****************************************************************
 # parse command line arguments
@@ -58,7 +53,7 @@ azcam.log(f"Configuring for vattspec")
 # ****************************************************************
 cmdserver = CommandServer()
 cmdserver.port = 2412
-azcam.log(f"Starting command server listening on port {cmdserver.port}")
+azcam.log(f"Starting cmdserver - listening on port {cmdserver.port}")
 # cmdserver.welcome_message = "Welcome - azcam-itl server"
 cmdserver.start()
 
@@ -72,12 +67,14 @@ controller.video_boards = ["gen2"]
 controller.utility_board = "gen2"
 controller.set_boards()
 controller.camserver.set_server("vattccdc", 2405)
-controller.pci_file = os.path.join(db.systemfolder, "dspcode", "dsppci", "pci2.lod")
+controller.pci_file = os.path.join(
+    azcam.db.systemfolder, "dspcode", "dsppci", "pci2.lod"
+)
 controller.timing_file = os.path.join(
-    db.systemfolder, "dspcode", "dsptiming", "tim2.lod"
+    azcam.db.systemfolder, "dspcode", "dsptiming", "tim2.lod"
 )
 controller.utility_file = os.path.join(
-    db.systemfolder, "dspcode", "dsputility", "util2.lod"
+    azcam.db.systemfolder, "dspcode", "dsputility", "util2.lod"
 )
 controller.video_gain = 10
 controller.video_speed = 1
@@ -101,8 +98,8 @@ controller.header.set_keyword("DEWAR", "vattspec_dewar", "Dewar name")
 # ****************************************************************
 exposure = ExposureArc()
 filetype = "FITS"
-exposure.filetype = db.filetypes[filetype]
-exposure.image.filetype = db.filetypes[filetype]
+exposure.filetype = azcam.db.filetypes[filetype]
+exposure.image.filetype = azcam.db.filetypes[filetype]
 exposure.display_image = 0
 exposure.filename.folder = "/mnt/TBArray/images"
 remote_imageserver_host = "vattcontrol.vatt"
@@ -140,8 +137,11 @@ telescope = telescope
 # ****************************************************************
 # system header template
 # ****************************************************************
-template = os.path.join(db.datafolder, "templates", "FitsTemplate_vattspec_master.txt")
-system = SystemHeader("vattspec", template)
+template = os.path.join(
+    azcam.db.datafolder, "templates", "FitsTemplate_vattspec_master.txt"
+)
+sysheader = Header("vattspec", template)
+sysheader.set_header("system", 0)
 
 # ****************************************************************
 # display
@@ -160,7 +160,7 @@ azcam.utils.curdir(wd)
 # ****************************************************************
 # define names to imported into namespace when using cli
 # # ****************************************************************
-db.cli_cmds.update({"azcam": azcam, "db": db})
+azcam.db.cli_cmds.update({"azcam": azcam})
 
 # ****************************************************************
 # web server
@@ -179,13 +179,7 @@ monitor.register()
 # GUIs
 # ****************************************************************
 if 1:
-    import start_azcamtool
-
-# ****************************************************************
-# clean namespace
-# # ****************************************************************
-del azcam.focalplane, azcam.displays, azcam.sockets
-del azcam.telescopes
+    import azcam_vatt.common.start_azcamtool
 
 # ****************************************************************
 # apps
