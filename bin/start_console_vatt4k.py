@@ -20,7 +20,7 @@ else:
 
 profile = "azcamconsole"
 
-import_command = f"import azcam_vatt.vatt4k.console_vatt4k; from azcam.cli import *"
+import_command = f"import azcam_vatt.vatt4k.console; from azcam.cli import *"
 
 # execute
 cl = (

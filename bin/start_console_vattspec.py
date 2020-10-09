@@ -15,12 +15,12 @@ interactive = "-i"  # "-i" or ""
 if len(sys.argv) > 1:
     arguments = sys.argv[1:]
 else:
-    # arguments = ["-system VIRUS -data \data"]
+    # arguments = ["-port 2412"]
     arguments = [""]
 
 profile = "azcamconsole"
 
-import_command = f"import azcam_vatt.vattspec.console_vattspec; from azcam.cli import *"
+import_command = f"import azcam_vatt.vattspec.console; from azcam.cli import *"
 
 # execute
 cl = (

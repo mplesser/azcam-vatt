@@ -8,9 +8,9 @@ import threading
 from azcam.console import azcam
 import azcam.shortcuts_console
 from azcam.displays.ds9display import Ds9Display
-from focus.focus import Focus
+from azcam_focus.focus import Focus
 from azcam.genpars import GenPars
-from observe.observe import Observe
+from azcam-observe.observe import Observe
 
 azcam.log("Loading azcam-vatt environment")
 
@@ -54,7 +54,7 @@ azcam.db.cli_cmds["observe"] = observe
 # ****************************************************************
 # try to connect to azcamserver
 # ****************************************************************
-connected = azcam.api.connect()
+connected = azcam.api.connect(2412)
 if connected:
     azcam.log("Connected to azcamserver")
 else:

@@ -29,15 +29,13 @@ except ValueError:
 # ****************************************************************
 # define folders for system
 # ****************************************************************
-azcam.db.systemname = "vatt4k"
-azcam.db.servermode = "vatt4k"
+azcam.db.systemname = "vattspec"
+azcam.db.servermode = "vattspec"
 azcam.db.systemfolder = os.path.dirname(__file__)
 azcam.db.systemfolder = azcam.utils.fix_path(azcam.db.systemfolder)
 azcam.db.datafolder = os.path.join("/data", azcam.db.systemname)
 azcam.db.datafolder = azcam.utils.fix_path(azcam.db.datafolder)
-azcam.db.parfile = os.path.join(
-    azcam.db.datafolder, f"parameters_{azcam.db.systemname}.ini"
-)
+azcam.db.parfile = os.path.join(azcam.db.datafolder, f"parameters_{azcam.db.systemname}.ini")
 
 # ****************************************************************
 # enable logging
@@ -46,13 +44,13 @@ tt = datetime.datetime.strftime(datetime.datetime.now(), "%d%b%y_%H%M%S")
 azcam.db.logfile = os.path.join(azcam.db.datafolder, "logs", f"server_{tt}.log")
 azcam.logging.start_logging(azcam.db.logfile, "123")
 
-azcam.log(f"Configuring for vatt4k")
+azcam.log(f"Configuring for vattspec")
 
 # ****************************************************************
 # define and start command server
 # ****************************************************************
 cmdserver = CommandServer()
-cmdserver.port = 2402
+cmdserver.port = 2412
 azcam.log(f"Starting cmdserver - listening on port {cmdserver.port}")
 # cmdserver.welcome_message = "Welcome - azcam-itl server"
 cmdserver.start()
@@ -61,30 +59,22 @@ cmdserver.start()
 # controller
 # ****************************************************************
 controller = ControllerArc()
-azcam.api.controller = controller
 controller.timing_board = "gen2"
 controller.clock_boards = ["gen2"]
-controller.video_boards = ["gen2", "gen2"]
+controller.video_boards = ["gen2"]
 controller.utility_board = "gen2"
 controller.set_boards()
 controller.camserver.set_server("vattccdc", 2405)
-controller.pci_file = os.path.join(
-    azcam.db.systemfolder, "dspcode", "dsppci", "pci2.lod"
-)
-controller.timing_file = os.path.join(
-    azcam.db.systemfolder, "dspcode", "dsptiming", "tim2.lod"
-)
-controller.utility_file = os.path.join(
-    azcam.db.systemfolder, "dspcode", "dsputility", "util2.lod"
-)
-controller.video_gain = 2
-controller.video_speed = 2
+controller.pci_file = os.path.join(azcam.db.systemfolder, "dspcode", "dsppci", "pci2.lod")
+controller.timing_file = os.path.join(azcam.db.systemfolder, "dspcode", "dsptiming", "tim2.lod")
+controller.utility_file = os.path.join(azcam.db.systemfolder, "dspcode", "dsputility", "util2.lod")
+controller.video_gain = 10
+controller.video_speed = 1
 
 # ****************************************************************
 # temperature controller
 # ****************************************************************
 tempcon = TempConArc()
-azcam.db.tempcon = tempcon
 tempcon.set_calibrations([0, 0, 3])
 tempcon.set_corrections([2.0, 0.0, 0.0], [1.0, 1.0, 1.0])
 tempcon.temperature_correction = 1
@@ -93,14 +83,13 @@ tempcon.control_temperature = -115.0
 # ****************************************************************
 # dewar
 # ****************************************************************
-controller.header.set_keyword("DEWAR", "vatt4k_dewar", "Dewar name")
+controller.header.set_keyword("DEWAR", "vattspec_dewar", "Dewar name")
 
 # ****************************************************************
 # exposure
 # ****************************************************************
 exposure = ExposureArc()
-azcam.api.exposure = exposure
-filetype = "MEF"
+filetype = "FITS"
 exposure.filetype = azcam.db.filetypes[filetype]
 exposure.image.filetype = azcam.db.filetypes[filetype]
 exposure.display_image = 0
@@ -113,21 +102,19 @@ exposure.set_remote_server(remote_imageserver_host, remote_imageserver_port)
 # ****************************************************************
 # detector
 # ****************************************************************
-detector_vatt4k = {
-    "name": "vatt4k",
-    "description": "STA0500 4064x4064 CCD",
-    "ref_pixel": [2032, 2032],
-    "format": [4064, 7, 0, 20, 4064, 0, 0, 0, 0],
-    "focalplane": [1, 1, 1, 2, "20"],
-    "roi": [1, 4064, 1, 4064, 2, 2],
-    "extension_position": [[1, 2], [1, 1]],
-    "jpg_order": [1, 2],
+detector_vattspec = {
+    "name": "vattspec",
+    "description": "STA0520 2688x512 CCD",
+    "ref_pixel": [1344, 256],
+    "format": [2688, 16, 0, 20, 512, 0, 0, 0, 0],
+    "focalplane": [1, 1, 1, 1, "0"],
+    "roi": [1, 2688, 1, 512, 2, 2],
+    "extension_position": [[1, 1]],
+    "jpg_order": [1],
 }
-exposure.set_detpars(detector_vatt4k)
-# WCS - plate scale (from Rich 19Mar13)
-sc = -0.000_052_1
-exposure.image.focalplane.wcs.scale1 = [sc, sc]
-exposure.image.focalplane.wcs.scale2 = [sc, sc]
+exposure.set_detpars(detector_vattspec)
+exposure.image.focalplane.wcs.ctype1 = "LINEAR"
+exposure.image.focalplane.wcs.ctype2 = "LINEAR"
 
 # ****************************************************************
 # instrument (not used)
@@ -142,10 +129,8 @@ telescope = telescope
 # ****************************************************************
 # system header template
 # ****************************************************************
-template = os.path.join(
-    azcam.db.datafolder, "templates", "FitsTemplate_vatt4k_master.txt"
-)
-sysheader = Header("vatt4k", template)
+template = os.path.join(azcam.db.datafolder, "templates", "FitsTemplate_vattspec_master.txt")
+sysheader = Header("vattspec", template)
 sysheader.set_header("system", 0)
 
 # ****************************************************************
@@ -170,14 +155,21 @@ azcam.db.cli_cmds.update({"azcam": azcam})
 # ****************************************************************
 # web server
 # ****************************************************************
+from azcam.webserver.web_server import WebServer
+
 webserver = WebServer()
+
+import azcam_webobs
+import azcam_exptool
+import azcam_status
+
 webserver.start()
 
 # ****************************************************************
 # azcammonitor
 # ****************************************************************
 monitor = azcam.monitorinterface.MonitorInterface()
-monitor.proc_path = "/azcam/azcam-vatt/bin/start_server_vatt4k.bat"
+monitor.proc_path = "/azcam/azcam-vatt/bin/start_server_vattspec.bat"
 monitor.register()
 
 # ****************************************************************

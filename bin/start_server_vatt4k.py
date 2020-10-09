@@ -20,7 +20,7 @@ else:
 
 profile = "azcamserver"
 
-import_command = f"import azcam_vatt.vatt4k.server_vatt4k; from azcam.cli import *"
+import_command = f"import azcam_vatt.vatt4k.server; from azcam.cli import *"
 
 # execute
 cl = (
