@@ -11,7 +11,6 @@ import azcam.shortcuts_console
 from azcam.displays.ds9display import Ds9Display
 from azcam_focus.focus import Focus
 from azcam.genpars import GenPars
-from azcam-observe.observe import Observe
 
 azcam.log("Loading azcam-vatt environment")
 
@@ -45,12 +44,6 @@ focus = Focus()
 azcam.db.cli_cmds["focus"] = focus
 focus.focus_component = "telescope"
 focus.focus_type = "absolute"
-
-# ****************************************************************
-# observe script
-# ****************************************************************
-observe = Observe()
-azcam.db.cli_cmds["observe"] = observe
 
 # ****************************************************************
 # try to connect to azcamserver
