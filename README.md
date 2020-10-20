@@ -2,7 +2,7 @@
 
 ## Purpose
 
-This repository contains the *azcam-vatt* package.  It has the environement, configuration, and system files for the VATT camera systems maintained by the UArizona Imaging Technology Laboratory.
+This repository contains the *azcam-vatt* *azcam* extension.  It has the environement, configuration, and system files for the VATT camera systems maintained by the UArizona Imaging Technology Laboratory.
 
 ## Installation Example
 
