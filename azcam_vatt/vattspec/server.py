@@ -13,7 +13,7 @@ import azcam.shortcuts
 from azcam.cmdserver import CommandServer
 from azcam.genpars import GenPars
 from azcam.header import Header
-from azcam.instruments.instrument import Instrument
+from azcam.instrument import Instrument
 from azcam.server import azcam
 from azcam.webserver.web_server import WebServer
 

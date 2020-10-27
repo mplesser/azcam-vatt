@@ -9,7 +9,7 @@ from azcam_vatt.common.vatt_filter_code import vatt_filters
 
 import azcam
 from azcam.header import Header
-from azcam.telescopes.telescope import Telescope
+from azcam.telescope import Telescope
 
 
 class StewardTCS(Telescope):
