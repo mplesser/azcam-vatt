@@ -8,9 +8,9 @@ import threading
 
 from azcam.console import azcam
 import azcam.shortcuts
-from azcam.displays.ds9display import Ds9Display
-from azcam_focus.focus import Focus
 from azcam.genpars import GenPars
+from azcam_ds9.ds9display import Ds9Display
+from azcam_focus.focus import Focus
 
 azcam.log("Loading azcam-vatt environment")
 
@@ -20,7 +20,9 @@ azcam.log("Loading azcam-vatt environment")
 azcam.db.systemname = "vattspec"
 azcam.db.systemfolder = os.path.dirname(__file__)
 azcam.db.datafolder = os.path.join("/data", azcam.db.systemname)
-azcam.db.parfile = os.path.join(azcam.db.datafolder, f"parameters_{azcam.db.systemname}.ini")
+azcam.db.parfile = os.path.join(
+    azcam.db.datafolder, f"parameters_{azcam.db.systemname}.ini"
+)
 
 # ****************************************************************
 # start logging

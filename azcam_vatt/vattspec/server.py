@@ -5,15 +5,15 @@ import datetime
 from azcam.server import azcam
 from azcam.genpars import GenPars
 import azcam.shortcuts
-from azcam.displays.ds9display import Ds9Display
 from azcam.header import Header
-from azcam_arc.controller_arc import ControllerArc
-from azcam_arc.tempcon_arc import TempConArc
-from azcam_arc.exposure_arc import ExposureArc
 from azcam.cmdserver import CommandServer
 from azcam.instruments.instrument import Instrument
 from azcam.webserver.web_server import WebServer
 import azcam.monitorinterface
+from azcam_arc.controller_arc import ControllerArc
+from azcam_arc.tempcon_arc import TempConArc
+from azcam_arc.exposure_arc import ExposureArc
+from azcam_ds9.ds9display import Ds9Display
 
 from azcam_vatt.common.telescope_vatt import telescope
 
@@ -35,7 +35,9 @@ azcam.db.systemfolder = os.path.dirname(__file__)
 azcam.db.systemfolder = azcam.utils.fix_path(azcam.db.systemfolder)
 azcam.db.datafolder = os.path.join("/data", azcam.db.systemname)
 azcam.db.datafolder = azcam.utils.fix_path(azcam.db.datafolder)
-azcam.db.parfile = os.path.join(azcam.db.datafolder, f"parameters_{azcam.db.systemname}.ini")
+azcam.db.parfile = os.path.join(
+    azcam.db.datafolder, f"parameters_{azcam.db.systemname}.ini"
+)
 
 # ****************************************************************
 # enable logging
@@ -65,9 +67,15 @@ controller.video_boards = ["gen2"]
 controller.utility_board = "gen2"
 controller.set_boards()
 controller.camserver.set_server("vattccdc", 2405)
-controller.pci_file = os.path.join(azcam.db.systemfolder, "dspcode", "dsppci", "pci2.lod")
-controller.timing_file = os.path.join(azcam.db.systemfolder, "dspcode", "dsptiming", "tim2.lod")
-controller.utility_file = os.path.join(azcam.db.systemfolder, "dspcode", "dsputility", "util2.lod")
+controller.pci_file = os.path.join(
+    azcam.db.systemfolder, "dspcode", "dsppci", "pci2.lod"
+)
+controller.timing_file = os.path.join(
+    azcam.db.systemfolder, "dspcode", "dsptiming", "tim2.lod"
+)
+controller.utility_file = os.path.join(
+    azcam.db.systemfolder, "dspcode", "dsputility", "util2.lod"
+)
 controller.video_gain = 10
 controller.video_speed = 1
 
@@ -129,7 +137,9 @@ telescope = telescope
 # ****************************************************************
 # system header template
 # ****************************************************************
-template = os.path.join(azcam.db.datafolder, "templates", "FitsTemplate_vattspec_master.txt")
+template = os.path.join(
+    azcam.db.datafolder, "templates", "FitsTemplate_vattspec_master.txt"
+)
 sysheader = Header("vattspec", template)
 sysheader.set_header("system", 0)
 

@@ -5,8 +5,8 @@ import datetime
 from azcam.server import azcam
 from azcam.genpars import GenPars
 import azcam.shortcuts
-from azcam.displays.ds9display import Ds9Display
 from azcam.header import Header
+from azcam_ds9.ds9display import Ds9Display
 from azcam_arc.controller_arc import ControllerArc
 from azcam_arc.tempcon_arc import TempConArc
 from azcam_arc.exposure_arc import ExposureArc
@@ -35,7 +35,9 @@ azcam.db.systemfolder = os.path.dirname(__file__)
 azcam.db.systemfolder = azcam.utils.fix_path(azcam.db.systemfolder)
 azcam.db.datafolder = os.path.join("/data", azcam.db.systemname)
 azcam.db.datafolder = azcam.utils.fix_path(azcam.db.datafolder)
-azcam.db.parfile = os.path.join(azcam.db.datafolder, f"parameters_{azcam.db.systemname}.ini")
+azcam.db.parfile = os.path.join(
+    azcam.db.datafolder, f"parameters_{azcam.db.systemname}.ini"
+)
 
 # ****************************************************************
 # enable logging
@@ -66,9 +68,15 @@ controller.video_boards = ["gen2", "gen2"]
 controller.utility_board = "gen2"
 controller.set_boards()
 controller.camserver.set_server("vattccdc", 2405)
-controller.pci_file = os.path.join(azcam.db.systemfolder, "dspcode", "dsppci", "pci2.lod")
-controller.timing_file = os.path.join(azcam.db.systemfolder, "dspcode", "dsptiming", "tim2.lod")
-controller.utility_file = os.path.join(azcam.db.systemfolder, "dspcode", "dsputility", "util2.lod")
+controller.pci_file = os.path.join(
+    azcam.db.systemfolder, "dspcode", "dsppci", "pci2.lod"
+)
+controller.timing_file = os.path.join(
+    azcam.db.systemfolder, "dspcode", "dsptiming", "tim2.lod"
+)
+controller.utility_file = os.path.join(
+    azcam.db.systemfolder, "dspcode", "dsputility", "util2.lod"
+)
 controller.video_gain = 2
 controller.video_speed = 2
 
@@ -134,7 +142,9 @@ telescope = telescope
 # ****************************************************************
 # system header template
 # ****************************************************************
-template = os.path.join(azcam.db.datafolder, "templates", "FitsTemplate_vatt4k_master.txt")
+template = os.path.join(
+    azcam.db.datafolder, "templates", "FitsTemplate_vatt4k_master.txt"
+)
 sysheader = Header("vatt4k", template)
 sysheader.set_header("system", 0)
 
