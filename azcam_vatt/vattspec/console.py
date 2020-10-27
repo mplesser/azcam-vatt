@@ -1,16 +1,17 @@
 # azcamconsole config file for vattspec
 
 
+import datetime
 import os
 import sys
-import datetime
 import threading
 
-from azcam.console import azcam
-import azcam.shortcuts
-from azcam.genpars import GenPars
 from azcam_ds9.ds9display import Ds9Display
 from azcam_focus.focus import Focus
+
+import azcam.shortcuts
+from azcam.console import azcam
+from azcam.genpars import GenPars
 
 azcam.log("Loading azcam-vatt environment")
 

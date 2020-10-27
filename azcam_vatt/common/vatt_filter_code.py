@@ -1,5 +1,5 @@
-import socket
 import re
+import socket
 
 
 class vatt_filters:

@@ -1,16 +1,17 @@
 # azcamconsole config file for vatt4k
 
+import datetime
 import os
 import sys
-import datetime
 import threading
 
-from azcam.console import azcam
-import azcam.shortcuts
 from azcam_ds9.ds9display import Ds9Display
 from azcam_focus.focus import Focus
-from azcam.genpars import GenPars
 from azcam_observe.observe import Observe
+
+import azcam.shortcuts
+from azcam.console import azcam
+from azcam.genpars import GenPars
 
 azcam.log("Loading azcam-vatt environment")
 

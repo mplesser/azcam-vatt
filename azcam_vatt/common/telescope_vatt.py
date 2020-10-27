@@ -1,15 +1,15 @@
 # Contains the StewardTCS class which defines the Telescope Control System interface for VATT.
 
-import sys
 import os
 import socket
+import sys
 import time
 
-import azcam
+from azcam_vatt.common.vatt_filter_code import vatt_filters
 
+import azcam
 from azcam.header import Header
 from azcam.telescopes.telescope import Telescope
-from azcam_vatt.common.vatt_filter_code import vatt_filters
 
 
 class StewardTCS(Telescope):
