@@ -2,20 +2,20 @@ import datetime
 import os
 import sys
 
-from azcam_arc.controller_arc import ControllerArc
-from azcam_arc.exposure_arc import ExposureArc
-from azcam_arc.tempcon_arc import TempConArc
-from azcam_ds9.ds9display import Ds9Display
-from azcam_vatt.common.telescope_vatt import telescope
-
+from azcam.server import azcam
 import azcam.monitorinterface
 import azcam.shortcuts
 from azcam.cmdserver import CommandServer
 from azcam.genpars import GenPars
 from azcam.header import Header
 from azcam.instrument import Instrument
-from azcam.server import azcam
 from azcam.webserver.web_server import WebServer
+
+from azcam_arc.controller_arc import ControllerArc
+from azcam_arc.exposure_arc import ExposureArc
+from azcam_arc.tempcon_arc import TempConArc
+from azcam_ds9.ds9display import Ds9Display
+from azcam_vatt.common.telescope_vatt import telescope
 
 # ****************************************************************
 # parse command line arguments
