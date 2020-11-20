@@ -8,7 +8,7 @@ import time
 from azcam_vatt.common.vatt_filter_code import vatt_filters
 
 import azcam
-from azcam.header import Header
+from azcam.system import System
 from azcam.telescope import Telescope
 
 

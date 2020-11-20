@@ -7,7 +7,7 @@ import azcam.monitorinterface
 import azcam.shortcuts
 from azcam.cmdserver import CommandServer
 from azcam.genpars import GenPars
-from azcam.header import Header
+from azcam.system import System
 from azcam.instrument import Instrument
 from azcam.webserver.web_server import WebServer
 
@@ -91,11 +91,6 @@ tempcon.temperature_correction = 1
 tempcon.control_temperature = -115.0
 
 # ****************************************************************
-# dewar
-# ****************************************************************
-controller.header.set_keyword("DEWAR", "vatt4k_dewar", "Dewar name")
-
-# ****************************************************************
 # exposure
 # ****************************************************************
 exposure = ExposureArc()
@@ -145,8 +140,8 @@ telescope = telescope
 template = os.path.join(
     azcam.db.datafolder, "templates", "FitsTemplate_vatt4k_master.txt"
 )
-sysheader = Header("vatt4k", template)
-sysheader.set_header("system", 0)
+system = System("vatt4k", template)
+system.set_keyword("DEWAR", "vatt4k_dewar", "Dewar name")
 
 # ****************************************************************
 # display
