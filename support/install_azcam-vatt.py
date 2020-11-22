@@ -19,6 +19,7 @@ repos = {
     "azcam-ds9": github_lesser,
     "azcam-testers": github_lesser,
     "azcam-arc": github_lesser,
+    "azcam-cryocon": github_lesser,
     "azcam-exptool": github_lesser,
     "azcam-monitor": github_lesser,
     "azcam-status": github_lesser,
