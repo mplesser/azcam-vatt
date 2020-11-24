@@ -35,16 +35,14 @@ azcam.db.systemfolder = os.path.dirname(__file__)
 azcam.db.systemfolder = azcam.utils.fix_path(azcam.db.systemfolder)
 azcam.db.datafolder = os.path.join("/data", azcam.db.systemname)
 azcam.db.datafolder = azcam.utils.fix_path(azcam.db.datafolder)
-azcam.db.parfile = os.path.join(
-    azcam.db.datafolder, f"parameters_{azcam.db.systemname}.ini"
-)
+azcam.db.parfile = os.path.join(azcam.db.datafolder, f"parameters_{azcam.db.systemname}.ini")
 
 # ****************************************************************
 # enable logging
 # ****************************************************************
 tt = datetime.datetime.strftime(datetime.datetime.now(), "%d%b%y_%H%M%S")
 azcam.db.logger.logfile = os.path.join(azcam.db.datafolder, "logs", f"server_{tt}.log")
-azcam.db.logger.start_logging(azcam.db.logger.logfile, "123")
+azcam.db.logger.start_logging()
 
 azcam.log(f"Configuring for vattspec")
 
@@ -67,15 +65,9 @@ controller.video_boards = ["gen2"]
 controller.utility_board = "gen2"
 controller.set_boards()
 controller.camserver.set_server("vattccdc", 2405)
-controller.pci_file = os.path.join(
-    azcam.db.systemfolder, "dspcode", "dsppci", "pci2.lod"
-)
-controller.timing_file = os.path.join(
-    azcam.db.systemfolder, "dspcode", "dsptiming", "tim2.lod"
-)
-controller.utility_file = os.path.join(
-    azcam.db.systemfolder, "dspcode", "dsputility", "util2.lod"
-)
+controller.pci_file = os.path.join(azcam.db.systemfolder, "dspcode", "dsppci", "pci2.lod")
+controller.timing_file = os.path.join(azcam.db.systemfolder, "dspcode", "dsptiming", "tim2.lod")
+controller.utility_file = os.path.join(azcam.db.systemfolder, "dspcode", "dsputility", "util2.lod")
 controller.video_gain = 10
 controller.video_speed = 1
 
@@ -132,9 +124,7 @@ telescope = telescope
 # ****************************************************************
 # system header template
 # ****************************************************************
-template = os.path.join(
-    azcam.db.datafolder, "templates", "FitsTemplate_vattspec_master.txt"
-)
+template = os.path.join(azcam.db.datafolder, "templates", "FitsTemplate_vattspec_master.txt")
 system = System("vattspec", template)
 system.set_keyword("DEWAR", "vattspec_dewar", "Dewar name")
 
