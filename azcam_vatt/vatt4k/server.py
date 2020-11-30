@@ -35,7 +35,9 @@ azcam.db.systemfolder = os.path.dirname(__file__)
 azcam.db.systemfolder = azcam.utils.fix_path(azcam.db.systemfolder)
 azcam.db.datafolder = os.path.join("/data", azcam.db.systemname)
 azcam.db.datafolder = azcam.utils.fix_path(azcam.db.datafolder)
-azcam.db.parfile = os.path.join(azcam.db.datafolder, f"parameters_{azcam.db.systemname}.ini")
+azcam.db.parfile = os.path.join(
+    azcam.db.datafolder, f"parameters_{azcam.db.systemname}.ini"
+)
 
 # ****************************************************************
 # enable logging
@@ -66,9 +68,15 @@ controller.video_boards = ["gen2", "gen2"]
 controller.utility_board = "gen2"
 controller.set_boards()
 controller.camserver.set_server("vattccdc", 2405)
-controller.pci_file = os.path.join(azcam.db.systemfolder, "dspcode", "dsppci", "pci2.lod")
-controller.timing_file = os.path.join(azcam.db.systemfolder, "dspcode", "dsptiming", "tim2.lod")
-controller.utility_file = os.path.join(azcam.db.systemfolder, "dspcode", "dsputility", "util2.lod")
+controller.pci_file = os.path.join(
+    azcam.db.systemfolder, "dspcode", "dsppci", "pci2.lod"
+)
+controller.timing_file = os.path.join(
+    azcam.db.systemfolder, "dspcode", "dsptiming", "tim2.lod"
+)
+controller.utility_file = os.path.join(
+    azcam.db.systemfolder, "dspcode", "dsputility", "util2.lod"
+)
 controller.video_gain = 2
 controller.video_speed = 2
 
@@ -107,7 +115,7 @@ detector_vatt4k = {
     "format": [4064, 7, 0, 20, 4064, 0, 0, 0, 0],
     "focalplane": [1, 1, 1, 2, "20"],
     "roi": [1, 4064, 1, 4064, 2, 2],
-    "extension_position": [[1, 2], [1, 1]],
+    "ext_position": [[1, 2], [1, 1]],
     "jpg_order": [1, 2],
 }
 exposure.set_detpars(detector_vatt4k)
@@ -129,7 +137,9 @@ telescope = telescope
 # ****************************************************************
 # system header template
 # ****************************************************************
-template = os.path.join(azcam.db.datafolder, "templates", "FitsTemplate_vatt4k_master.txt")
+template = os.path.join(
+    azcam.db.datafolder, "templates", "FitsTemplate_vatt4k_master.txt"
+)
 system = System("vatt4k", template)
 system.set_keyword("DEWAR", "vatt4k_dewar", "Dewar name")
 
