@@ -17,9 +17,9 @@ class StewardTCS(Telescope):
     The interface to the Steward Observatory TCS telescope server.
     """
 
-    def __init__(self, obj_id="telescope", obj_name="VATT telescope"):
+    def __init__(self, obj_id="telescope", name="VATT telescope"):
 
-        super().__init__(obj_id, obj_name)
+        super().__init__(obj_id, name)
 
         # telescope header object
         self.use_bokpop = 0
