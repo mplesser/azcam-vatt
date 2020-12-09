@@ -3,7 +3,7 @@ import os
 import sys
 
 from azcam.server import azcam
-import azcam.monitorinterface
+from azcam.monitorinterface import MonitorInterface
 import azcam.shortcuts
 from azcam.cmdserver import CommandServer
 from azcam.genpars import GenPars
@@ -16,6 +16,9 @@ from azcam_arc.exposure_arc import ExposureArc
 from azcam_arc.tempcon_arc import TempConArc
 from azcam_ds9.ds9display import Ds9Display
 from azcam_vatt.common.telescope_vatt import telescope
+import azcam_exptool
+import azcam_status
+import azcam_webobs
 
 # ****************************************************************
 # parse command line arguments
@@ -165,20 +168,16 @@ azcam.db.cli_cmds.update({"azcam": azcam})
 # ****************************************************************
 # web server
 # ****************************************************************
-from azcam.webserver.web_server import WebServer
-
 webserver = WebServer()
-
-import azcam_exptool
-import azcam_status
-import azcam_webobs
-
+azcam_exptool.load()
+azcam_status.load()
+azcam_webobs.load()
 webserver.start()
 
 # ****************************************************************
 # azcammonitor
 # ****************************************************************
-monitor = azcam.monitorinterface.MonitorInterface()
+monitor = MonitorInterface()
 monitor.proc_path = "/azcam/azcam-vatt/bin/start_server_vatt4k.bat"
 monitor.register()
 
