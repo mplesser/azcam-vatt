@@ -92,7 +92,7 @@ class StewardTCS(Telescope):
         # append FILTER info since this is not in other Steward TCS systems
         self.Tserver.keywords["FILTER"] = "FILTER"
         self.Tserver.comments["FILTER"] = "Instrument filter"
-        self.Tserver.typestrings["FILTER"] = str
+        self.Tserver.typestrings["FILTER"] = "str"
         self.Tserver.ReplyLengths["FILTER"] = 11
 
         # self.Tserver.keywords.pop('ROTANGLE')
@@ -113,9 +113,7 @@ class StewardTCS(Telescope):
             return ["WARNING", "telescope not enabled"]
 
         try:
-            command = self.Tserver.make_packet(
-                "REQUEST " + self.Tserver.keywords[keyword]
-            )
+            command = self.Tserver.make_packet("REQUEST " + self.Tserver.keywords[keyword])
         except KeyError:
             return ["ERROR", "Keyword %s not defined" % keyword]
 
@@ -337,20 +335,12 @@ class StewardTCS(Telescope):
 
             if not motion:
                 azcam.log("Telescope reports it is STOPPED")
-                azcam.log(
-                    "Coords:", self.get_keyword("RA")[1], self.get_keyword("DEC")[1]
-                )
-                azcam.log(
-                    "Coords:", self.get_keyword("RA")[1], self.get_keyword("DEC")[1]
-                )
-                azcam.log(
-                    "Coords:", self.get_keyword("RA")[1], self.get_keyword("DEC")[1]
-                )
+                azcam.log("Coords:", self.get_keyword("RA")[1], self.get_keyword("DEC")[1])
+                azcam.log("Coords:", self.get_keyword("RA")[1], self.get_keyword("DEC")[1])
+                azcam.log("Coords:", self.get_keyword("RA")[1], self.get_keyword("DEC")[1])
                 return
             else:
-                azcam.log(
-                    "Coords:", self.get_keyword("RA")[1], self.get_keyword("DEC")[1]
-                )
+                azcam.log("Coords:", self.get_keyword("RA")[1], self.get_keyword("DEC")[1])
 
             time.sleep(0.1)
             cycle += 1  # not used for now
@@ -517,9 +507,7 @@ class TelcomServerInterface(object):
         """
 
         try:
-            reply = self.Socket.send(
-                str.encode(command + "\r\n")
-            )  # send command with terminator
+            reply = self.Socket.send(str.encode(command + "\r\n"))  # send command with terminator
         except:
             pass
 
@@ -558,9 +546,7 @@ class TelcomServerInterface(object):
         if keyword == "ROTANGLE":
             ReplyLength = ReplyLength - 2
 
-        reply = telemetry[
-            self.Offsets[keyword] - 1 : self.Offsets[keyword] + ReplyLength
-        ]
+        reply = telemetry[self.Offsets[keyword] - 1 : self.Offsets[keyword] + ReplyLength]
 
         # parse RA and DEC specially
         if keyword == "RA":
@@ -572,9 +558,9 @@ class TelcomServerInterface(object):
 
         # convert type
         try:
-            if self.typestrings[keyword] == int:
+            if self.typestrings[keyword] == "int":
                 reply = int(reply)
-            elif self.typestrings[keyword] == float:
+            elif self.typestrings[keyword] == "float":
                 reply = float(reply)
         except Exception as message:
             azcam.log("ERROR reading telescope data (%s):" % keyword, message)
