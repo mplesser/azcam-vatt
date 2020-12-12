@@ -12,7 +12,7 @@ from azcam.system import System
 from azcam.telescope import Telescope
 
 
-class StewardTCS(Telescope):
+class VattTCS(Telescope):
     """
     The interface to the Steward Observatory TCS telescope server.
     """
@@ -20,9 +20,6 @@ class StewardTCS(Telescope):
     def __init__(self, obj_id="telescope", name="VATT telescope"):
 
         super().__init__(obj_id, name)
-
-        # telescope header object
-        self.use_bokpop = 0
 
         self.vfilters = vatt_filters()
 
@@ -39,10 +36,6 @@ class StewardTCS(Telescope):
         if not self.enabled:
             azcam.AzcamWarning(f"{self.name} is not enabled")
             return
-
-        # do not write telescope header with bokpop as it is in 'instrument'
-        if self.use_bokpop:
-            azcam.db["headerorder"].remove("telescope")
 
         # telescope server interface
         self.Tserver = TelcomServerInterface()
@@ -73,32 +66,16 @@ class StewardTCS(Telescope):
         return
 
     # **************************************************************************************************
-    # Keywords
+    # header
     # **************************************************************************************************
     def define_keywords(self):
         """
-        Defines telescope keywords to telescope, if they are not already defined.
+        Sets up header keywords dictionary.
         """
-
-        if len(self.Tserver.keywords) == 0:
-            return
 
         # add keywords to header
         for key in self.Tserver.keywords:
-            self.header.keywords[key] = self.Tserver.keywords[key]
-            self.header.comments[key] = self.Tserver.comments[key]
-            self.header.typestrings[key] = self.Tserver.typestrings[key]
-
-        # append FILTER info since this is not in other Steward TCS systems
-        self.Tserver.keywords["FILTER"] = "FILTER"
-        self.Tserver.comments["FILTER"] = "Instrument filter"
-        self.Tserver.typestrings["FILTER"] = "str"
-        self.Tserver.ReplyLengths["FILTER"] = 11
-
-        # self.Tserver.keywords.pop('ROTANGLE')
-        # self.Tserver.comments.pop('ROTANGLE')
-        # self.Tserver.typestrings.pop('ROTANGLE')
-        # self.Tserver.ReplyLengths.pop('ROTANGLE')
+            self.set_keyword(key, "", self.Tserver.comments[key], self.Tserver.typestrings[key])
 
         return
 
@@ -110,20 +87,8 @@ class StewardTCS(Telescope):
         """
 
         if not self.enabled:
-            return ["WARNING", "telescope not enabled"]
-
-        try:
-            command = self.Tserver.make_packet("REQUEST " + self.Tserver.keywords[keyword])
-        except KeyError:
-            return ["ERROR", "Keyword %s not defined" % keyword]
-
-        ReplyLength = self.Tserver.ReplyLengths[keyword]
-        ReplyLength = ReplyLength + 3  # is this right?
-
-        reply = self.Tserver.command(command, ReplyLength + self.Tserver.Offset)
-        if reply[0] != "OK":
-            self.header.set_keyword(keyword, "")
-            return reply
+            azcam.AzcamWarning(f"{self.name} is not enabled")
+            return
 
         if keyword == "FILTER":
             for i in range(3):
@@ -134,7 +99,18 @@ class StewardTCS(Telescope):
                     azcam.log(f"Filter read error {i}...")
                     time.sleep(0.2)
             reply = f"upper: {fdict['upper']} lower: {fdict['lower']}"
+
         else:
+            try:
+                command = self.Tserver.make_packet("REQUEST " + self.Tserver.keywords[keyword])
+            except KeyError:
+                return ["ERROR", "Keyword %s not defined" % keyword]
+            ReplyLength = self.Tserver.ReplyLengths[keyword]
+            ReplyLength = ReplyLength + 3  # is this right?
+            reply = self.Tserver.command(command, ReplyLength + self.Tserver.Offset)
+            if reply[0] != "OK":
+                self.header.set_keyword(keyword, "")
+                return reply
             reply = self.Tserver.parse_reply(reply[1], ReplyLength)
 
         # parse RA and DEC specially
@@ -150,43 +126,7 @@ class StewardTCS(Telescope):
 
         reply, t = self.header.convert_type(reply, self.header.typestrings[keyword])
 
-        return ["OK", reply, self.Tserver.comments[keyword], t]
-
-    def read_header(self):
-        """
-        Returns telescope header info.
-        returns [Header[]]: Each element Header[i] contains the sublist (keyword, value, comment, and type).
-        Example: Header[2][1] is the value of keyword 2 and Header[2][3] is its type.
-        Type is one of str, int, or float.
-        """
-
-        if not self.enabled:
-            return ["WARNING", "telescope not enabled"]
-
-        # for key in self.header.get_all_keywords():
-        for key in self.Tserver.keywords:
-            self.get_keyword(key)
-
-        return self.header.get_info()
-
-    def update_header(self):
-        """
-        Update headers, reading current data.
-        """
-
-        # delete all keywords if not enabled
-        if not self.enabled:
-            self.header.delete_all_keywords()
-            return
-
-        if self.use_bokpop:
-            return
-
-        # update header
-        self.define_keywords()
-        self.read_header()
-
-        return
+        return [reply, self.Tserver.comments[keyword], t]
 
     # **************************************************************************************************
     # Focus
@@ -220,7 +160,7 @@ class StewardTCS(Telescope):
         except:
             self.FocusPosition = focpos
 
-        return ["OK", self.FocusPosition]
+        return [self.FocusPosition]
 
     # **************************************************************************************************
     # Move
@@ -287,7 +227,8 @@ class StewardTCS(Telescope):
         azcam.log("move_start command received:%s %s" % (RA, Dec))
 
         if not self.enabled:
-            return ["WARNING", "telescope not enabled"]
+            azcam.AzcamWarning("telescope not enabled")
+            return
 
         if self.DEBUG == 1:
             return
@@ -316,7 +257,8 @@ class StewardTCS(Telescope):
         """
 
         if not self.enabled:
-            return ["WARNING", "telescope not enabled"]
+            azcam.AzcamWarning("telescope not enabled")
+            return
 
         if self.DEBUG == 1:
             return
@@ -331,7 +273,7 @@ class StewardTCS(Telescope):
             try:
                 motion = int(reply[1])
             except:
-                return ["ERROR", "bad MOTION status keyword: %s" % reply[1]]
+                azcam.AzCamError("bad MOTION status keyword: %s" % reply[1])
 
             if not motion:
                 azcam.log("Telescope reports it is STOPPED")
@@ -351,7 +293,7 @@ class StewardTCS(Telescope):
         command = self.Tserver.make_packet(command)
         reply = self.Tserver.command(command, 1024)
 
-        return ["ERROR", "STOPPED motion flag not detected"]
+        return
 
 
 class TelcomServerInterface(object):
@@ -379,6 +321,7 @@ class TelcomServerInterface(object):
         "ST": "ST",
         "EPOCH": "EQ",
         "MOTION": "MOTION",
+        "FILTER": "FILTER",
     }
     comments = {
         "RA": "right ascension",
@@ -395,6 +338,7 @@ class TelcomServerInterface(object):
         "ST": "local siderial time",
         "EPOCH": "equinox of RA and DEC",
         "MOTION": "motion flag",
+        "FILTER": "Instrument filter",
     }
     typestrings = {
         "RA": "str",
@@ -411,6 +355,7 @@ class TelcomServerInterface(object):
         "ROTANGLE": "float",
         "ST": "str",
         "EPOCH": "float",
+        "FILTER": "str",
     }
     # ReplyLengths={'RA':9,'DEC':9,'AIRMASS':5,'HA':9,'LST-OBS':8,'EQUINOX':7,
     #      'JULIAN':10,'ELEVAT':5,'AZIMUTH':6,'MOTION':1,'ROTANGLE':5,'ST':8,'EPOCH':7}
@@ -428,6 +373,7 @@ class TelcomServerInterface(object):
         "ROTANGLE": 5,
         "ST": 8,
         "EPOCH": 7,
+        "FILTER": -1,
     }
     Offsets = {
         "RA": 4,
@@ -443,6 +389,7 @@ class TelcomServerInterface(object):
         "ROTANGLE": 129,
         "ST": 35,
         "EPOCH": 76,
+        "FILTER": -1,
     }
 
     def __init__(self):
@@ -582,7 +529,7 @@ class TelcomServerInterface(object):
 
     def parse_remove_null(self, List):
         """
-        Internal Use Only.<br>
+        Internal Use Only.
         """
 
         while 1:
@@ -592,7 +539,3 @@ class TelcomServerInterface(object):
                 break
 
         return List
-
-
-# instance
-telescope = StewardTCS()
