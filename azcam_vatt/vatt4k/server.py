@@ -97,8 +97,8 @@ exposure.display_image = 0
 exposure.folder = "/mnt/TBArray/images"
 remote_imageserver_host = "vattcontrol.vatt"
 remote_imageserver_port = 6543
-exposure.set_remote_server(remote_imageserver_host, remote_imageserver_port)
-# exposure.set_remote_server()
+exposure.set_remote_imageserver(remote_imageserver_host, remote_imageserver_port)
+# exposure.set_remote_imageserver()
 
 # ****************************************************************
 # detector
