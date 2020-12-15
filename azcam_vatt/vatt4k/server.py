@@ -9,7 +9,7 @@ from azcam.cmdserver import CommandServer
 from azcam.genpars import GenPars
 from azcam.system import System
 from azcam.instrument import Instrument
-from azcam.webserver.web_server import WebServer
+from azcam_webserver.web_server import WebServer
 
 from azcam_arc.controller_arc import ControllerArc
 from azcam_arc.exposure_arc import ExposureArc
