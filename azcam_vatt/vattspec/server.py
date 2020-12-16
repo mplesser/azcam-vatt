@@ -2,19 +2,26 @@ import datetime
 import os
 import sys
 
-from azcam.server import azcam
+import azcam
+import azcam.server
 import azcam.shortcuts
 from azcam.cmdserver import CommandServer
 from azcam.genpars import GenPars
 from azcam.system import System
 from azcam.instrument import Instrument
-from azcam_monitor.monitorinterface import MonitorInterface
+from azcam_monitor.monitorinterface import AzCamMonitorInterface
 from azcam_webserver.web_server import WebServer
 from azcam_arc.controller_arc import ControllerArc
 from azcam_arc.exposure_arc import ExposureArc
 from azcam_arc.tempcon_arc import TempConArc
 from azcam_ds9.ds9display import Ds9Display
-from azcam_vatt.common.telescope_vatt import telescope
+from azcam_vatt.common.telescope_vatt import VattTCS
+import azcam_exptool
+import azcam_status
+import azcam_webobs
+
+# set True for lab testing
+LAB = 1
 
 # ****************************************************************
 # parse command line arguments
@@ -34,7 +41,9 @@ azcam.db.systemfolder = os.path.dirname(__file__)
 azcam.db.systemfolder = azcam.utils.fix_path(azcam.db.systemfolder)
 azcam.db.datafolder = os.path.join("/data", azcam.db.systemname)
 azcam.db.datafolder = azcam.utils.fix_path(azcam.db.datafolder)
-azcam.db.parfile = os.path.join(azcam.db.datafolder, f"parameters_{azcam.db.systemname}.ini")
+azcam.db.parfile = os.path.join(
+    azcam.db.datafolder, f"parameters_{azcam.db.systemname}.ini"
+)
 
 # ****************************************************************
 # enable logging
@@ -63,12 +72,21 @@ controller.clock_boards = ["gen2"]
 controller.video_boards = ["gen2"]
 controller.utility_board = "gen2"
 controller.set_boards()
-controller.camserver.set_server("vattccdc", 2405)
-controller.pci_file = os.path.join(azcam.db.systemfolder, "dspcode", "dsppci", "pci2.lod")
-controller.timing_file = os.path.join(azcam.db.systemfolder, "dspcode", "dsptiming", "tim2.lod")
-controller.utility_file = os.path.join(azcam.db.systemfolder, "dspcode", "dsputility", "util2.lod")
+controller.pci_file = os.path.join(
+    azcam.db.systemfolder, "dspcode", "dsppci", "pci2.lod"
+)
+controller.timing_file = os.path.join(
+    azcam.db.systemfolder, "dspcode", "dsptiming", "tim2.lod"
+)
+controller.utility_file = os.path.join(
+    azcam.db.systemfolder, "dspcode", "dsputility", "util2.lod"
+)
 controller.video_gain = 10
 controller.video_speed = 1
+if LAB:
+    controller.camserver.set_server("conserver7", 2405)
+else:
+    controller.camserver.set_server("vattccdc", 2405)
 
 # ****************************************************************
 # temperature controller
@@ -87,11 +105,14 @@ filetype = "FITS"
 exposure.filetype = azcam.db.filetypes[filetype]
 exposure.image.filetype = azcam.db.filetypes[filetype]
 exposure.display_image = 0
-exposure.folder = "/mnt/TBArray/images"
-remote_imageserver_host = "vattcontrol.vatt"
-remote_imageserver_port = 6543
-exposure.set_remote_imageserver(remote_imageserver_host, remote_imageserver_port)
-# exposure.set_remote_imageserver()
+if LAB:
+    exposure.folder = "/data/vattspec"
+    exposure.set_remote_imageserver()
+else:
+    exposure.folder = "/mnt/TBArray/images"
+    remote_imageserver_host = "vattcontrol.vatt"
+    remote_imageserver_port = 6543
+    exposure.set_remote_imageserver(remote_imageserver_host, remote_imageserver_port)
 
 # ****************************************************************
 # detector
@@ -118,12 +139,14 @@ instrument = Instrument()
 # ****************************************************************
 # telescope
 # ****************************************************************
-telescope = telescope
+telescope = VattTCS()
 
 # ****************************************************************
 # system header template
 # ****************************************************************
-template = os.path.join(azcam.db.datafolder, "templates", "FitsTemplate_vattspec_master.txt")
+template = os.path.join(
+    azcam.db.datafolder, "templates", "FitsTemplate_vattspec_master.txt"
+)
 system = System("vattspec", template)
 system.set_keyword("DEWAR", "vattspec_dewar", "Dewar name")
 
@@ -158,7 +181,7 @@ webserver.start()
 # ****************************************************************
 # azcammonitor
 # ****************************************************************
-monitor = MonitorInterface()
+monitor = AzCamMonitorInterface()
 monitor.proc_path = "/azcam/azcam-vatt/bin/start_server_vattspec.bat"
 monitor.register()
 
@@ -169,10 +192,15 @@ if 1:
     import azcam_vatt.common.start_azcamtool
 
 # ****************************************************************
-# apps
-# ****************************************************************
-
-# ****************************************************************
 # finish
 # ****************************************************************
 azcam.log("Configuration complete")
+
+# ****************************************************************
+# Debug code
+# ****************************************************************
+if 0:
+    azcam.db.verbosity = 3
+    azcam.api.exposure.reset()
+    # azcam.api.exposure.test(0.1, "flat")
+    # input("Waiting...")
