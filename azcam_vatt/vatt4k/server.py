@@ -6,7 +6,6 @@ import azcam
 import azcam.server
 import azcam.shortcuts
 from azcam.cmdserver import CommandServer
-from azcam.genpars import GenPars
 from azcam.system import System
 from azcam.instrument import Instrument
 from azcam_monitor.monitorinterface import AzCamMonitorInterface
@@ -38,9 +37,7 @@ azcam.db.systemfolder = os.path.dirname(__file__)
 azcam.db.systemfolder = azcam.utils.fix_path(azcam.db.systemfolder)
 azcam.db.datafolder = os.path.join("/data", azcam.db.systemname)
 azcam.db.datafolder = azcam.utils.fix_path(azcam.db.datafolder)
-azcam.db.parfile = os.path.join(
-    azcam.db.datafolder, f"parameters_{azcam.db.systemname}.ini"
-)
+azcam.db.parfile = os.path.join(azcam.db.datafolder, f"parameters_{azcam.db.systemname}.ini")
 
 # ****************************************************************
 # enable logging
@@ -71,15 +68,9 @@ controller.video_boards = ["gen2", "gen2"]
 controller.utility_board = "gen2"
 controller.set_boards()
 controller.camserver.set_server("vattccdc", 2405)
-controller.pci_file = os.path.join(
-    azcam.db.systemfolder, "dspcode", "dsppci", "pci2.lod"
-)
-controller.timing_file = os.path.join(
-    azcam.db.systemfolder, "dspcode", "dsptiming", "tim2.lod"
-)
-controller.utility_file = os.path.join(
-    azcam.db.systemfolder, "dspcode", "dsputility", "util2.lod"
-)
+controller.pci_file = os.path.join(azcam.db.systemfolder, "dspcode", "dsppci", "pci2.lod")
+controller.timing_file = os.path.join(azcam.db.systemfolder, "dspcode", "dsptiming", "tim2.lod")
+controller.utility_file = os.path.join(azcam.db.systemfolder, "dspcode", "dsputility", "util2.lod")
 controller.video_gain = 2
 controller.video_speed = 2
 
@@ -140,9 +131,7 @@ telescope = VattTCS()
 # ****************************************************************
 # system header template
 # ****************************************************************
-template = os.path.join(
-    azcam.db.datafolder, "templates", "FitsTemplate_vatt4k_master.txt"
-)
+template = os.path.join(azcam.db.datafolder, "templates", "FitsTemplate_vatt4k_master.txt")
 system = System("vatt4k", template)
 system.set_keyword("DEWAR", "vatt4k_dewar", "Dewar name")
 
@@ -154,10 +143,9 @@ display = Ds9Display()
 # ****************************************************************
 # read par file
 # ****************************************************************
-genpars = GenPars()
-pardict = genpars.parfile_read(azcam.db.parfile)["azcamserver"]
+pardict = azcam.api.config.parfile_read(azcam.db.parfile)["azcamserver"]
 azcam.utils.update_pars(0, pardict)
-wd = genpars.get_par(pardict, "wd", "default")
+wd = azcam.api.config.get_par(pardict, "wd", "default")
 azcam.utils.curdir(wd)
 
 # ****************************************************************

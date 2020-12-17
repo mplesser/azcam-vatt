@@ -8,7 +8,6 @@ import threading
 import azcam
 import azcam.console
 import azcam.shortcuts
-from azcam.genpars import GenPars
 from azcam_ds9.ds9display import Ds9Display
 from azcam_focus.focus import Focus
 
@@ -19,9 +18,7 @@ from azcam_focus.focus import Focus
 azcam.db.systemname = "vattspec"
 azcam.db.systemfolder = os.path.dirname(__file__)
 azcam.db.datafolder = os.path.join("/data", azcam.db.systemname)
-azcam.db.parfile = os.path.join(
-    azcam.db.datafolder, f"parameters_{azcam.db.systemname}.ini"
-)
+azcam.db.parfile = os.path.join(azcam.db.datafolder, f"parameters_{azcam.db.systemname}.ini")
 
 # ****************************************************************
 # start logging
@@ -58,10 +55,9 @@ else:
 # ****************************************************************
 # read par file
 # ****************************************************************
-genpars = GenPars()
-pardict = genpars.parfile_read(azcam.db.parfile)["azcamconsole"]
+pardict = azcam.api.config.parfile_read(azcam.db.parfile)["azcamconsole"]
 azcam.utils.update_pars(0, pardict)
-wd = genpars.get_par(pardict, "wd", "default")
+wd = azcam.api.config.get_par(pardict, "wd", "default")
 azcam.utils.curdir(wd)
 
 # ****************************************************************
