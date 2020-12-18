@@ -4,7 +4,7 @@ import sys
 
 import azcam
 import azcam.server
-import azcam.shortcuts
+import azcam.shortcuts_server
 from azcam.cmdserver import CommandServer
 from azcam.system import System
 from azcam.instrument import Instrument
@@ -93,8 +93,8 @@ tempcon.control_temperature = -115.0
 # ****************************************************************
 exposure = ExposureArc()
 filetype = "FITS"
-exposure.filetype = azcam.db.filetypes[filetype]
-exposure.image.filetype = azcam.db.filetypes[filetype]
+exposure.filetype = exposure.filetypes[filetype]
+exposure.image.filetype = exposure.filetypes[filetype]
 exposure.display_image = 0
 if LAB:
     exposure.folder = "/data/vattspec"
