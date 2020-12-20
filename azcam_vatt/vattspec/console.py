@@ -18,7 +18,7 @@ from azcam_focus.focus import Focus
 azcam.db.systemname = "vattspec"
 azcam.db.systemfolder = os.path.dirname(__file__)
 azcam.db.datafolder = os.path.join("/data", azcam.db.systemname)
-azcam.db.parfile = os.path.join(azcam.db.datafolder, f"parameters_{azcam.db.systemname}.ini")
+parfile = os.path.join(azcam.db.datafolder, f"parameters_{azcam.db.systemname}.ini")
 
 # ****************************************************************
 # start logging
@@ -55,8 +55,8 @@ else:
 # ****************************************************************
 # read par file
 # ****************************************************************
-pardict = azcam.api.config.parfile_read(azcam.db.parfile)
-azcam.api.config.update_pars(0, pardict["azcamconsole"])
+pardict = azcam.api.config.read_parfile(parfile)
+azcam.api.config.update_pars(0, "azcamconsole")
 
 # ****************************************************************
 # finish
