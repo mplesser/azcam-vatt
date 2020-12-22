@@ -17,7 +17,8 @@ from azcam_ds9.ds9display import Ds9Display
 from azcam_vatt.common.telescope_vatt import VattTCS
 import azcam_exptool
 import azcam_status
-import azcam_webobs
+import azcam_observe.webobs
+
 
 # ****************************************************************
 # parse command line arguments
