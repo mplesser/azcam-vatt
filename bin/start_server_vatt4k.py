@@ -18,7 +18,6 @@ interactive = "-i"  # "-i" or ""
 
 # parse arguments for command script
 if len(sys.argv) > 1:
-    # arguments = ["-system VATT4k -data \data\vatt4k"]
     arguments = sys.argv[1:]
 else:
     arguments = [""]
