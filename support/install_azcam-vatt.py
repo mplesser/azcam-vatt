@@ -13,7 +13,6 @@ CLONE = 0
 INSTALL = 1
 
 github_lesser = "https://github.com/mplesser/"
-github_uaitl = "https://github.com/uaitl/"
 repos = {
     "azcam": github_lesser,
     "azcam-ds9": github_lesser,
@@ -27,7 +26,6 @@ repos = {
     "azcam-observe": github_lesser,
     "azcam-webserver": github_lesser,
     "azcam-focus": github_lesser,
-    "azcam-vatt": github_lesser,
 }
 repos_with_requirements = []
 
@@ -52,9 +50,7 @@ if INSTALL:
         else:
             cmd = f"pip install -e {root}\\{repo}"
         subprocess.call(
-            cmd,
-            shell=False,
-            cwd=f"{root}",
+            cmd, shell=False, cwd=f"{root}",
         )
 
 input("\nPress Enter to continue...")

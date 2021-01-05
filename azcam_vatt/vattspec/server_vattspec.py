@@ -14,7 +14,6 @@ from azcam_arc.controller_arc import ControllerArc
 from azcam_arc.exposure_arc import ExposureArc
 from azcam_arc.tempcon_arc import TempConArc
 from azcam_ds9.ds9display import Ds9Display
-from azcam_vatt.common.telescope_vatt import VattTCS
 import azcam_exptool
 import azcam_status
 import azcam_observe.webobs
@@ -42,6 +41,15 @@ azcam.db.systemfolder = azcam.utils.fix_path(azcam.db.systemfolder)
 azcam.db.datafolder = os.path.join("/data", azcam.db.systemname)
 azcam.db.datafolder = azcam.utils.fix_path(azcam.db.datafolder)
 parfile = os.path.join(azcam.db.datafolder, f"parameters_{azcam.db.systemname}.ini")
+
+# ****************************************************************
+# add folders to search path
+# ****************************************************************
+for p in ["vattspec"]:
+    folder = os.path.join(azcam.db.systemfolder, p)
+    azcam.utils.add_searchfolder(folder, 0)
+folder = os.path.abspath(os.path.join(azcam.db.systemfolder, "../common"))
+azcam.utils.add_searchfolder(folder, 0)
 
 # ****************************************************************
 # enable logging
@@ -131,6 +139,8 @@ instrument = Instrument()
 # ****************************************************************
 # telescope
 # ****************************************************************
+from telescope_vatt import VattTCS
+
 telescope = VattTCS()
 
 # ****************************************************************
@@ -162,7 +172,7 @@ azcam.db.cli_cmds.update({"azcam": azcam})
 webserver = WebServer()
 azcam_exptool.load()
 azcam_status.load()
-azcam_webobs.load()
+azcam_observe.webobs.load()
 webserver.start()
 
 # ****************************************************************
@@ -176,7 +186,7 @@ monitor.register()
 # GUIs
 # ****************************************************************
 if 1:
-    import azcam_vatt.common.start_azcamtool
+    import start_azcamtool
 
 # ****************************************************************
 # finish
