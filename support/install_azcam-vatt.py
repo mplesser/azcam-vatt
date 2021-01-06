@@ -50,7 +50,9 @@ if INSTALL:
         else:
             cmd = f"pip install -e {root}\\{repo}"
         subprocess.call(
-            cmd, shell=False, cwd=f"{root}",
+            cmd,
+            shell=False,
+            cwd=f"{root}",
         )
 
 input("\nPress Enter to continue...")
