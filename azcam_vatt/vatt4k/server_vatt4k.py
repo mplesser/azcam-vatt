@@ -45,8 +45,8 @@ parfile = os.path.join(azcam.db.datafolder, f"parameters_{azcam.db.systemname}.i
 for p in ["vatt4k"]:
     folder = os.path.join(azcam.db.systemfolder, p)
     azcam.utils.add_searchfolder(folder, 0)
-folder = os.path.abspath(os.path.join(azcam.db.systemfolder, "../common"))
-azcam.utils.add_searchfolder(folder, 0)
+commonfolder = os.path.abspath(os.path.join(azcam.db.systemfolder, "../common"))
+azcam.utils.add_searchfolder(commonfolder, 0)
 
 # ****************************************************************
 # enable logging
@@ -77,15 +77,9 @@ controller.video_boards = ["gen2", "gen2"]
 controller.utility_board = "gen2"
 controller.set_boards()
 controller.camserver.set_server("vattccdc", 2405)
-controller.pci_file = os.path.join(
-    azcam.db.systemfolder, "dspcode", "dsppci", "pci2.lod"
-)
-controller.timing_file = os.path.join(
-    azcam.db.systemfolder, "dspcode", "dsptiming", "tim2.lod"
-)
-controller.utility_file = os.path.join(
-    azcam.db.systemfolder, "dspcode", "dsputility", "util2.lod"
-)
+controller.pci_file = os.path.join(azcam.db.systemfolder, "dspcode", "dsppci", "pci2.lod")
+controller.timing_file = os.path.join(azcam.db.systemfolder, "dspcode", "dsptiming", "tim2.lod")
+controller.utility_file = os.path.join(azcam.db.systemfolder, "dspcode", "dsputility", "util2.lod")
 controller.video_gain = 2
 controller.video_speed = 2
 
@@ -148,9 +142,7 @@ telescope = VattTCS()
 # ****************************************************************
 # system header template
 # ****************************************************************
-template = os.path.join(
-    azcam.db.datafolder, "templates", "FitsTemplate_vatt4k_master.txt"
-)
+template = os.path.join(azcam.db.datafolder, "templates", "FitsTemplate_vatt4k_master.txt")
 system = System("vatt4k", template)
 system.set_keyword("DEWAR", "vatt4k_dewar", "Dewar name")
 
@@ -174,10 +166,13 @@ azcam.db.cli_cmds.update({"azcam": azcam})
 # web server
 # ****************************************************************
 webserver = WebServer()
+webserver.templates_folder = commonfolder
+webserver.index = f"index_VATT.html"
+webserver.port = 2403  # common port for all configurations
+webserver.start()
 azcam_exptool.load()
 azcam_status.load()
 azcam_observe.webobs.load()
-webserver.start()
 
 # ****************************************************************
 # azcammonitor
