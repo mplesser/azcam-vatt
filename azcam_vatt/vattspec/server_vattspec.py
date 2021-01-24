@@ -78,9 +78,15 @@ controller.clock_boards = ["gen2"]
 controller.video_boards = ["gen2"]
 controller.utility_board = "gen2"
 controller.set_boards()
-controller.pci_file = os.path.join(azcam.db.systemfolder, "dspcode", "dsppci", "pci2.lod")
-controller.timing_file = os.path.join(azcam.db.systemfolder, "dspcode", "dsptiming", "tim2.lod")
-controller.utility_file = os.path.join(azcam.db.systemfolder, "dspcode", "dsputility", "util2.lod")
+controller.pci_file = os.path.join(
+    azcam.db.systemfolder, "dspcode", "dsppci", "pci2.lod"
+)
+controller.timing_file = os.path.join(
+    azcam.db.systemfolder, "dspcode", "dsptiming", "tim2.lod"
+)
+controller.utility_file = os.path.join(
+    azcam.db.systemfolder, "dspcode", "dsputility", "util2.lod"
+)
 controller.video_gain = 10
 controller.video_speed = 1
 if LAB:
@@ -146,7 +152,9 @@ telescope = VattTCS()
 # ****************************************************************
 # system header template
 # ****************************************************************
-template = os.path.join(azcam.db.datafolder, "templates", "FitsTemplate_vattspec_master.txt")
+template = os.path.join(
+    azcam.db.datafolder, "templates", "FitsTemplate_vattspec_master.txt"
+)
 system = System("vattspec", template)
 system.set_keyword("DEWAR", "vattspec_dewar", "Dewar name")
 
